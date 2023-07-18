@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { useRoutes } from 'react-router-dom';
+import { Navigate, useRoutes } from 'react-router-dom';
 import Loading from '@/components/common/Loading';
 import ResultPage from '@/pages/ResultPage';
 
@@ -13,10 +13,10 @@ const RouterConfig = () => {
       path: '/', 
       element: <HomePage />,
       children: [
+        { index: true, element: <Navigate to="/map" replace /> },
         { path: 'map', element: <MapPage /> },
         { path: 'search', element: <SearchPage /> },
         { path: 'result', element: <ResultPage /> },
-        { path: '/', element: <MapPage /> },  // 當路由是 '/' 時，預設導向 '/map'
       ],
     },
     // 更多routes可以在這裡添加
