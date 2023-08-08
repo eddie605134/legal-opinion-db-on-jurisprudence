@@ -37,7 +37,7 @@ const StyledTab = styled('a')({
     cursor: 'pointer',
   },
   '&.selected': {
-    zIndex: 3,
+    zIndex: '5 !important',
     '&::before': {
       background: '#FDF3E7',
       marginBottom: '-.16em',
@@ -76,9 +76,9 @@ const TabsComponent = () => {
 
   return (
     <StyledNav>
-      <StyledTab className={currentTabIndex === 0 ? 'selected' : ''} onClick={(e) => handleChange(e, 0)}>系統介紹＆說明</StyledTab>
-      <StyledTab className={currentTabIndex === 1 ? 'selected' : ''} onClick={(e) => handleChange(e, 1)}>查詢</StyledTab>
-      <StyledTab className={currentTabIndex === 2 ? 'selected' : ''} onClick={(e) => handleChange(e, 2)}>查詢結果</StyledTab>
+      <StyledTab className={currentTabIndex === 0 ? 'selected' : ''} onClick={(e) => handleChange(e, 0)} sx={{zIndex: 4}}>系統介紹＆說明</StyledTab>
+      <StyledTab className={currentTabIndex === 1 ? 'selected' : ''} onClick={(e) => handleChange(e, 1)} sx={{zIndex: 3}}>查詢</StyledTab>
+      <StyledTab className={currentTabIndex === 2 ? 'selected' : ''} onClick={(e) => handleChange(e, 2)} sx={{zIndex: 2}}>查詢結果</StyledTab>
     </StyledNav>
   );
 };
