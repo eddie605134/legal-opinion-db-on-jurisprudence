@@ -20,6 +20,7 @@ const StyledTab = styled('a')({
   fontSize: '26px',
   zIndex: 2,
   cursor: 'pointer',
+  fontWeight: 'bold',
   '&::before': {
     content: '""',
     position: 'absolute',
@@ -29,18 +30,21 @@ const StyledTab = styled('a')({
     left: 0,
     zIndex: -1,
     background: '#D6B894',
-    border: '4px solid #5F5346',
+    border: '6px solid #5F5346',
     borderBottom: 'none',
     borderRadius: '.5em .5em 0 0',
-    transform: 'scale(1.13, 1.3) perspective(.55em) rotateX(5deg)',
-    transformOrigin: 'bottom left',
+    borderTopLeftRadius: '3.5em',
+    borderTopRightRadius: '999px',
+    // transform: 'scale(1.13, 1.3) perspective(.55em) rotateX(5deg)',
+    // transformOrigin: 'bottom left',
     cursor: 'pointer',
   },
   '&.selected': {
     zIndex: '5 !important',
+    padding: '0.45em 2em 0',
     '&::before': {
       background: '#FDF3E7',
-      marginBottom: '-.16em',
+      marginBottom: '-.26em',
     }
   }
 });
