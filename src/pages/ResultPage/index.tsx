@@ -4,9 +4,9 @@ import { decrement, increment } from '@/store/counterSlice';
 import { RootState, AppDispatch } from '@/store';
 import { Grid, Box } from '@mui/material';
 
-import SearchPageContent from './SearchPage';
+import Result from './Result';
 
-function SearchPage() {
+function ResultPage() {
   const counter = useSelector((state: RootState) => state.counter.value);
   const dispatch: AppDispatch = useDispatch();
 
@@ -14,11 +14,11 @@ function SearchPage() {
     <Box marginLeft={5} marginRight={5}>
       <Grid container sx={{ margin: '20px' }}>
         <Grid item xs={12}>
-          <SearchPageContent />
+          <Result />
         </Grid>
       </Grid>
     </Box>
   );
 }
 
-export default SearchPage;
+export default ResultPage;
