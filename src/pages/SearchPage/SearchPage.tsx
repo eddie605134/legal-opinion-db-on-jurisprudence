@@ -3,7 +3,6 @@ import React from 'react';
 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import ResultPage from './ResultPage';
 import Button from '@mui/material/Button';
 import { FormControl, FormControlLabel, Radio, RadioGroup } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
