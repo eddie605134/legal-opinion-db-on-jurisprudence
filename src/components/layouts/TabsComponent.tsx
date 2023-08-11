@@ -1,20 +1,20 @@
 import React from 'react';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
 import { styled } from '@mui/system';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-const StyledNav = styled('nav')({
+import { tabs } from '@/constants';
+
+const StyledNav = styled('nav')(({ theme }) => ({
   zIndex: 1,
   paddingLeft: '7px',
-  background: '#C0E5FE'
-});
+  background: theme.palette.background.default
+}));
 
-const StyledTab = styled('a')({
+const StyledTab = styled('a')(({theme}) => ({
   display: 'inline-block',
   padding: '.3em 2em 0',
   textDecoration: 'none',
-  color: '#5F5346',
+  color: theme.palette.custom.layoutBorder.default,
   position: 'relative',
   margin: '0 -.3em',
   fontSize: '26px',
@@ -29,8 +29,8 @@ const StyledTab = styled('a')({
     bottom: 0,
     left: 0,
     zIndex: -1,
-    background: '#D6B894',
-    border: '7px solid #5F5346',
+    background: theme.palette.primary.main,
+    border: `7px solid ${theme.palette.custom.layoutBorder.default}`,
     borderBottom: 'none',
     borderRadius: '.5em .5em 0 0',
     borderTopLeftRadius: '3.5em',
@@ -43,11 +43,18 @@ const StyledTab = styled('a')({
     zIndex: '5 !important',
     padding: '0.45em 2em 0',
     '&::before': {
-      background: '#FDF3E7',
+      background: theme.palette.custom.contentBackground.default,
       marginBottom: '-.26em',
+      '@media (max-width: 1050px)': {
+        marginBottom: '-0.3em',
+        marginLeft: '-2px',
+      }
     }
+  },
+  '@media (max-width: 1050px)': {
+    fontSize: '18px',
   }
-});
+}));
 
 const TabsComponent = () => {
   const navigate = useNavigate();
@@ -80,9 +87,17 @@ const TabsComponent = () => {
 
   return (
     <StyledNav>
-      <StyledTab className={currentTabIndex === 0 ? 'selected' : ''} onClick={(e) => handleChange(e, 0)} sx={{zIndex: 4}}>系統介紹＆說明</StyledTab>
-      <StyledTab className={currentTabIndex === 1 ? 'selected' : ''} onClick={(e) => handleChange(e, 1)} sx={{zIndex: 3}}>查詢</StyledTab>
-      <StyledTab className={currentTabIndex === 2 ? 'selected' : ''} onClick={(e) => handleChange(e, 2)} sx={{zIndex: 2}}>查詢結果</StyledTab>
+      {
+        tabs.map((tab) => (
+          <StyledTab
+            key={tab.index}
+            className={currentTabIndex === tab.index ? 'selected' : ''}
+            onClick={(e) => handleChange(e, tab.index)}
+            sx={{ zIndex: tab.zIndex }}
+          >
+            {tab.label}
+          </StyledTab>
+      ))}
     </StyledNav>
   );
 };

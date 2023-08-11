@@ -1,25 +1,18 @@
 // HomePage.tsx
 import React, { useState, useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
 import { useLocation } from 'react-router-dom'; 
-import { styled } from '@mui/system';
+import { useTheme  } from '@mui/system';
 
 import Grid from '@mui/material/Unstable_Grid2';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 
 import Header from '@/components/layouts/Header'
 import TabsComponent from '@/components/layouts/TabsComponent';
+import { MainContent } from '@/components/layouts/MainContent';
+import { AnimatedGrid } from '@/components/common/AnimatedGrid';
 
-type StyledProps = {
-  flexBasis: string;
-};
-
-const AnimatedGrid = styled(Grid)<StyledProps>(({ theme, flexBasis }) => ({
-  flexBasis: flexBasis,
-  transition: 'flex-basis 0.3s cubic-bezier(0.4, 0.0, 0.2, 1)',
-}))
+import useChangeTitle from '@/hooks/useChangeTitle';
 
 const Sider = () => {
   return (
@@ -27,21 +20,11 @@ const Sider = () => {
   );
 }
 
-const MainContent = () => {
-  return (
-    <CardContent sx={{
-      border: '6px solid #5F5346',
-      background: '#FDF3E7',
-      borderTopRightRadius: '.5em',
-      minHeight: '80vh'
-    }}>
-      <Outlet />
-    </CardContent>
-  );
-}
-
 const HomePage = () => {
   const location = useLocation();
+  const theme = useTheme();
+  useChangeTitle();
+
   const pathIsMap = location.pathname === '/map';
   // 1. 設置初始狀態以防動畫失效
   const [sideFlexBasis, setSideFlexBasis] = useState('0%');
@@ -61,7 +44,10 @@ const HomePage = () => {
             <Sider />
           </AnimatedGrid>
           <AnimatedGrid flexBasis={mainFlexBasis} xs={ pathIsMap ? 8 : 12 }>
-            <Card sx={{ boxShadow: 'unset', background: '#C0E5FE' }}>
+            <Card sx={{
+              boxShadow: 'unset',
+              background: theme.palette.background.default
+            }}>
               <TabsComponent />
               <MainContent />
             </Card>
