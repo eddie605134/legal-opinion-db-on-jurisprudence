@@ -30,7 +30,7 @@ const StyledTab = styled('a')({
     left: 0,
     zIndex: -1,
     background: '#D6B894',
-    border: '6px solid #5F5346',
+    border: '7px solid #5F5346',
     borderBottom: 'none',
     borderRadius: '.5em .5em 0 0',
     borderTopLeftRadius: '3.5em',
