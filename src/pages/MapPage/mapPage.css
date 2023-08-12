@@ -1,0 +1,21 @@
+.button-click{
+    background-color: brown;
+    color: white;
+    font-weight: bold;
+}
+.button-nonclick{
+    background-color: rgb(231, 180, 180);
+    color: black;
+}
+.path-click{
+    stroke: rgb(235, 255, 154);
+    fill: rgb(199, 228, 37);
+}
+.toppath-click{
+    stroke: rgb(255, 0, 0);
+    stroke-width: 3;
+    fill: rgb(210, 166, 166);
+}
+.setLabel{
+    display: block;
+}

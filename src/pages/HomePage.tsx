@@ -13,10 +13,13 @@ import { MainContent } from '@/components/layouts/MainContent';
 import { AnimatedGrid } from '@/components/common/AnimatedGrid';
 
 import useChangeTitle from '@/hooks/useChangeTitle';
+import TaiwanSVG from './MapPage/TaiwanSVG';
 
 const Sider = () => {
   return (
-    <div></div>
+    <div>
+      <TaiwanSVG />
+    </div>
   );
 }
 

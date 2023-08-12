@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import counterReducer from './counterSlice'
+import mapReducer from './mapSlice'
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
+    maper: mapReducer,
   },
 })
 
