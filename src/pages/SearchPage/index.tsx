@@ -1,22 +1,119 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { decrement, increment } from '@/store/counterSlice';
-import { RootState, AppDispatch } from '@/store';
-import { Grid, Box } from '@mui/material';
+// SearchPage.tsx
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 
-import SearchPageContent from './SearchPage';
+import { inputSearch } from '@/store/searchSlice';
+import {
+  useRandomKeyword,
+  useRandomOpinion,
+  useSearchOpinionByKeyword,
+  useSearchOpinionByOpinion,
+} from '@/services/query';
+
+import Box from '@mui/material/Box';
+import FormControl from '@mui/material/FormControl';
+import Typography from '@mui/material/Typography';
+
+import RadioSelection from './components/RadioSelection';
+import KeywordInput from './components/KeywordInput';
+import OpinionInput from './components/OpinionInput';
+import ActionButtons from './components/ActionButtons';
 
 function SearchPage() {
-  const counter = useSelector((state: RootState) => state.counter.value);
-  const dispatch: AppDispatch = useDispatch();
+  const [value, setValue] = useState('1');
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue((event.target as HTMLInputElement).value);
+  };
+
+  const [keyword, setKeyword] = useState('');
+  const handleKeywordChange = (event: any) => {
+    if (event.target.value != undefined) {
+      setKeyword(event.target.value);
+    }
+  };
+  const handleRandomKeyWord = async () => {
+    const { data: newKeywordData } = await refetchKeyword();
+    if (newKeywordData?.keyword) {
+      setKeyword(newKeywordData?.keyword);
+    }
+  }
+
+  const [opinion, setOpinion] = useState('');
+  const handleOpinionChange = (event: any) => {
+    if (event.target.value != undefined) {
+      setOpinion(event.target.value);
+    }
+  };
+  const handleRandomOpinion = async () => {
+    const { data: newOpinionData } = await refetchOpinion();
+    if (newOpinionData?.opinion) {
+      setOpinion(newOpinionData?.opinion);
+    }
+  }
+
+  const handleSearch = () => {
+    if (value == '1') {
+      handleSearchKeyword();
+    }
+    else {
+      handleSearchOpinion();
+    }
+  }
+  const handleSearchKeyword = () => {
+    refetchSearchKeyword();
+    console.log(resultkeyword);
+  }
+  const handleSearchOpinion = () => {
+    refetchSearchOpinion();
+    console.log(resultopinion);
+  }
+
+  const {
+    refetch: refetchKeyword,
+    isFetching: keywordLoading,
+  } = useRandomKeyword();
+  const {
+    refetch: refetchOpinion,
+    isFetching: opinionLoading,
+  } = useRandomOpinion();
+  const { data: resultkeyword, refetch: refetchSearchKeyword } = useSearchOpinionByKeyword(keyword);
+  const { data: resultopinion, refetch: refetchSearchOpinion } = useSearchOpinionByOpinion(opinion);
 
   return (
-    <Box marginLeft={5} marginRight={5}>
-      <Grid container sx={{ margin: '20px' }}>
-        <Grid item xs={12}>
-          <SearchPageContent />
-        </Grid>
-      </Grid>
+    <Box display="flex" justifyContent="center" alignItems="flex-start" pt={4}>
+      <FormControl>
+        <Typography variant="h3" sx={{
+          textAlign: 'center',
+          fontWeight: 'bold',
+          color: 'custom.layoutBorder.default',
+          mb: 8
+        }}>
+          查詢資訊
+        </Typography>
+
+        <RadioSelection value={value} onChange={handleChange} />
+
+        {value === '1' &&
+          <KeywordInput
+          isVisible={value === '1'}
+          value={keyword}
+          onChange={handleKeywordChange}
+          />}
+        {value === '2' &&
+          <OpinionInput
+            isVisible={value === '2'}
+            value={opinion}
+            onChange={handleOpinionChange}
+          />}
+
+        <ActionButtons
+          searchType={value}
+          isRandomLoading={keywordLoading || opinionLoading}
+          onKeyWordRandomClick={handleRandomKeyWord}
+          onOpinionRandomClick={handleRandomOpinion}
+          onSubmit={handleSearch}
+        />
+      </FormControl>
     </Box>
   );
 }

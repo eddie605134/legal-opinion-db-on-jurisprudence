@@ -1,5 +1,5 @@
 import { styled } from '@mui/system';
-import { useLocation } from 'react-router-dom'; 
+import { useLocation, useNavigate } from 'react-router-dom'; 
 import Logo from '@/static/images/logo.png';
 
 type StyledProps = {
@@ -44,12 +44,17 @@ const SpanText = styled('span')({
 
 function Header() {
   const location = useLocation();
+  const navigate = useNavigate()
 
   const pathIsMap = location.pathname === '/map';
   return (
     <HeaderContainer>
       <>
-        <LogoImage src={Logo} alt="Logo" />
+        <LogoImage
+          src={Logo}
+          alt="Logo"
+          sx={{ cursor: 'pointer' }}
+          onClick={() => navigate('/')} />
         <HeaderText>
           <SpanText sx={{ml: 1, fontSize: '26px'}}>台灣地圖上的見解資料庫</SpanText>
         </HeaderText>

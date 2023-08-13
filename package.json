@@ -12,6 +12,7 @@
     "@emotion/react": "latest",
     "@emotion/styled": "latest",
     "@mui/icons-material": "latest",
+    "@mui/lab": "5.0.0-alpha.139",
     "@mui/material": "latest",
     "@mui/system": "^5.14.1",
     "@reduxjs/toolkit": "^1.9.5",
