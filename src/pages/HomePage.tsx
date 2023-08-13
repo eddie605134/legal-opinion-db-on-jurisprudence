@@ -1,7 +1,10 @@
 // HomePage.tsx
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom'; 
-import { useTheme  } from '@mui/system';
+import { useTheme } from '@mui/system';
+import { useSelector } from 'react-redux';
+
+import { RootState } from '@/store';
 
 import Grid from '@mui/material/Unstable_Grid2';
 import Box from '@mui/material/Box';
@@ -14,11 +17,21 @@ import { AnimatedGrid } from '@/components/common/AnimatedGrid';
 
 import useChangeTitle from '@/hooks/useChangeTitle';
 import TaiwanSVG from './MapPage/TaiwanSVG';
+import AdvancedSearchDrawer from './ResultPage/AdvancedSearchDrawer';
+import { log } from 'console';
+
+
 
 const Sider = () => {
+  const location = useLocation();
+  const advanceSearchOpen = useSelector((state: RootState) => state.result.advanceSearchOpen);
+
+  const pathIsMap = location.pathname === '/map';
+  const pathIsResult = location.pathname === '/result'
   return (
     <div>
-      <TaiwanSVG />
+      {pathIsMap && <TaiwanSVG />}
+      {pathIsResult && advanceSearchOpen && <AdvancedSearchDrawer />}
     </div>
   );
 }
@@ -26,27 +39,32 @@ const Sider = () => {
 const HomePage = () => {
   const location = useLocation();
   const theme = useTheme();
+  const advanceSearchOpen = useSelector((state: RootState) => state.result.advanceSearchOpen);
   useChangeTitle();
 
   const pathIsMap = location.pathname === '/map';
+  const pathIsResult = location.pathname === '/result'
   // 1. 設置初始狀態以防動畫失效
   const [sideFlexBasis, setSideFlexBasis] = useState('0%');
   const [mainFlexBasis, setMainFlexBasis] = useState('100%');
 
   // 2. 在 useEffect 中設置目标狀態
   useEffect(() => {
-    setSideFlexBasis(pathIsMap ? '33.33%' : '0%');
-    setMainFlexBasis(pathIsMap ? '66.66%' : '100%');
-  }, [pathIsMap]);
+    setSideFlexBasis((pathIsMap || (pathIsResult && advanceSearchOpen)) ? '33.33%' : '0%');
+    setMainFlexBasis((pathIsMap || (pathIsResult && advanceSearchOpen)) ? '66.66%' : '100%');
+  }, [pathIsMap, pathIsResult, advanceSearchOpen]);
+
+  console.log('pathIsResult', pathIsResult);
+
   return (
     <>
       <Header />
       <Box sx={{ p: 6, pt: 0, flexGrow: 1 }}>
         <Grid container>
-          <AnimatedGrid flexBasis={sideFlexBasis} xs={pathIsMap ? 4 : 0}>
+          <AnimatedGrid flexBasis={sideFlexBasis} xs={(pathIsMap || (pathIsResult && advanceSearchOpen)) ? 5 : 0}>
             <Sider />
           </AnimatedGrid>
-          <AnimatedGrid flexBasis={mainFlexBasis} xs={ pathIsMap ? 8 : 12 }>
+          <AnimatedGrid flexBasis={mainFlexBasis} xs={(pathIsMap || (pathIsResult && advanceSearchOpen)) ? 7 : 12}>
             <Card sx={{
               boxShadow: 'unset',
               background: theme.palette.background.default

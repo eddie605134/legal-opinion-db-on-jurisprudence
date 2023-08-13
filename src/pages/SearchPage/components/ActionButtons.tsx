@@ -1,9 +1,14 @@
 import React from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
+// import Button from '@mui/material/Button';
 import LoadingButton from '@mui/lab/LoadingButton';
 import SendIcon from '@mui/icons-material/Send';
 import CreateIcon from '@mui/icons-material/Create';
+
+import {
+  SearchButton,
+  SubmitButton
+} from '@/components/common/buttons';
 
 interface ActionButtonsProps {
   searchType: string;
@@ -29,32 +34,20 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
   };
   return (
     <Box display="flex" justifyContent="space-between" sx={{ width: '100%' }}>
-      <LoadingButton
-        variant="contained"
+      <SearchButton
         endIcon={<CreateIcon />}
-        loading={isRandomLoading}
-        sx={{
-          textAlign: 'justify',
-          color: '#5F5346',
-          fontWeight: 600,
-          '&:hover': {
-            backgroundColor: 'rgba(191, 163, 128)'
-          }
-        }}
+        isLoading={isRandomLoading}
         onClick={ () => onRandom() }
       >
         {searchType === '1' ? '隨機關鍵字' : '隨機見解'}
-      </LoadingButton>
-      <LoadingButton
-        variant="contained"
-        color="success"
-        // loading={isLoading}
+      </SearchButton>
+      <SubmitButton
+        // isLoading={isRandomLoading}
         endIcon={<SendIcon />}
-        sx={{ fontWeight: 600 }}
         onClick={onSubmit}
       >
         送出
-      </LoadingButton>
+      </SubmitButton>
     </Box>
   );
 };

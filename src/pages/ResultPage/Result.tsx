@@ -1,10 +1,15 @@
 // ResultPage.tsx
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { setAdvanceSearchOpen } from '@/store/resultSlice';
 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Button, Checkbox, Container, Drawer, FormControl, FormControlLabel, FormGroup, InputLabel, List, ListItem, ListItemButton, ListItemText, MenuItem, Select, SelectChangeEvent, Slider, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { relative } from 'path';
+import {
+  SearchButton,
+} from '@/components/common/buttons';
+import SavedSearchIcon from '@mui/icons-material/SavedSearch';
 
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
@@ -25,6 +30,7 @@ const rows = [
 ];
 
 function ResultPage() {
+  const disPatch = useDispatch()
   const [courthouse, setCourthouse] = React.useState('');
   const courthouseChange = (event: SelectChangeEvent) => {
     setCourthouse(event.target.value as string);
@@ -49,7 +55,7 @@ function ResultPage() {
 
   const toggleDrawer =
     (anchor: Anchor, open: boolean) =>
-      (event: React.KeyboardEvent | React.MouseEvent) => {
+      (event: React.KeyboardEvent | React.MouseEvent | any) => {
         if (
           event.type === 'keydown' &&
           ((event as React.KeyboardEvent).key === 'Tab' ||
@@ -163,7 +169,14 @@ function ResultPage() {
       <div style={{ marginTop: '10px' }}>
         {(['left'] as const).map((anchor) => (
           <React.Fragment key={anchor}>
-            <Button style={{backgroundColor: 'lightgray', color: 'black'}} onClick={toggleDrawer(anchor, true)}>進階搜尋</Button>
+            <SearchButton
+              endIcon={<SavedSearchIcon />}
+              onClick={ () => {
+                disPatch(setAdvanceSearchOpen(true))
+              }}
+            >
+              進階搜尋
+            </SearchButton>
             <Drawer
               anchor={anchor}
               open={state[anchor]}
@@ -177,7 +190,7 @@ function ResultPage() {
       {/* <div style={{width: '70%', position: 'relative', float: 'right' }}> */}
       <div style={{ marginTop: '10px' }}>
         <TableContainer>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <Table aria-label="simple table">
             <TableHead>
               <TableRow>
                 <TableCell align="center">地院</TableCell>
@@ -193,10 +206,10 @@ function ResultPage() {
                   key={row.courthouse}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
-                  <TableCell component="th" scope="row">
+                  <TableCell component="th" scope="row" align="center">
                     {row.courthouse}
                   </TableCell>
-                  <TableCell>{row.date}</TableCell>
+                  <TableCell align="center">{row.date}</TableCell>
                   <TableCell>{row.url}</TableCell>
                   <TableCell>{row.casenumber}</TableCell>
                   <TableCell>{row.describe}</TableCell>

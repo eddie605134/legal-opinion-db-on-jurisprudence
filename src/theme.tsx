@@ -56,6 +56,18 @@ const theme = createTheme({
         }
       }
     },
+    MuiTableCell: {
+      styleOverrides: {
+        head: {
+          backgroundColor: '#D6B894',
+          body: {
+            '&:nth-of-type(odd)': {
+              backgroundColor: '#f4f4f4', // 這裡可以改為你想要的斑馬紋顏色
+            },
+          },
+        },
+      },
+    },
   },
 });
 
