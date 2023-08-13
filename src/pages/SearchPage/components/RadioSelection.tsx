@@ -8,8 +8,13 @@ interface RadioSelectionProps {
 
 const RadioSelection: React.FC<RadioSelectionProps> = ({ value, onChange }) => {
   return (
-    <div>
-      <Typography component="span" variant="h6" id="demo-controlled-radio-buttons-group">
+    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+      <Typography
+        component="span"
+        variant="h6"
+        id="demo-controlled-radio-buttons-group"
+        sx={{ mr: 1 }}
+      >
         查詢條件：
       </Typography>
       <RadioGroup row value={value} onChange={onChange}>
