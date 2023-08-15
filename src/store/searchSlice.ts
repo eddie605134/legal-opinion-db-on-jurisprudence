@@ -9,7 +9,7 @@ const initialState: SearchState = {
 }
 
 export const searchSlice = createSlice({
-  name: 'counter',
+  name: 'search',
   initialState,
   reducers: {
     inputSearch: (state, action:PayloadAction<string>) => {

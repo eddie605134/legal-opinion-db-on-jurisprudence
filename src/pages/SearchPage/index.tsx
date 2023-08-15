@@ -1,8 +1,8 @@
 // SearchPage.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { inputSearch } from '@/store/searchSlice';
+import { setResultList, setQueryText } from '@/store/resultSlice';
 import {
   useRandomKeyword,
   useRandomOpinion,
@@ -18,8 +18,12 @@ import RadioSelection from './components/RadioSelection';
 import KeywordInput from './components/KeywordInput';
 import OpinionInput from './components/OpinionInput';
 import ActionButtons from './components/ActionButtons';
+import { useNavigate } from 'react-router-dom';
 
 function SearchPage() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [value, setValue] = useState('1');
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue((event.target as HTMLInputElement).value);
@@ -51,22 +55,19 @@ function SearchPage() {
     }
   }
 
-  const handleSearch = () => {
-    if (value == '1') {
-      handleSearchKeyword();
+  const handleSearch = async () => {
+    const fetchData = value === '1' ? refetchSearchKeyword : refetchSearchOpinion;
+    const { data } = await fetchData();
+    if (data) {
+      if (data.list) {
+        dispatch(setResultList(data.list));
+      }
+      if (data.queryText) {
+        dispatch(setQueryText(data.queryText));
+      }
     }
-    else {
-      handleSearchOpinion();
-    }
-  }
-  const handleSearchKeyword = () => {
-    refetchSearchKeyword();
-    console.log(resultkeyword);
-  }
-  const handleSearchOpinion = () => {
-    refetchSearchOpinion();
-    console.log(resultopinion);
-  }
+  };
+
 
   const {
     refetch: refetchKeyword,
@@ -76,8 +77,28 @@ function SearchPage() {
     refetch: refetchOpinion,
     isFetching: opinionLoading,
   } = useRandomOpinion();
-  const { data: resultkeyword, refetch: refetchSearchKeyword } = useSearchOpinionByKeyword(keyword);
-  const { data: resultopinion, refetch: refetchSearchOpinion } = useSearchOpinionByOpinion(opinion);
+  const {
+    refetch: refetchSearchKeyword,
+    error: opinionError,
+    isLoading: searchOpinionLoading,
+  } = useSearchOpinionByKeyword(keyword);
+  const {
+    refetch: refetchSearchOpinion,
+    error: keywordError,
+    isLoading: searchKeywordLoading,
+  } = useSearchOpinionByOpinion(opinion);
+
+  useEffect(() => {
+    if (!searchOpinionLoading && !opinionError) {
+      navigate('/result');
+    }
+  }, [searchOpinionLoading]);
+
+  useEffect(() => {
+    if (!searchKeywordLoading && !keywordError) {
+      navigate('/result');
+    }
+  }, [searchKeywordLoading]);
 
   return (
     <Box display="flex" justifyContent="center" alignItems="flex-start" pt={4}>

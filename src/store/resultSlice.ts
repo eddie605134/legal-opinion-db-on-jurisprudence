@@ -1,5 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+import { 
+  OpinionType
+} from '@/types/map'
+
 import dayjs from 'dayjs'
 
 interface FilterValues {
@@ -15,7 +19,9 @@ interface FilterValues {
 
 interface ResultState {
   advanceSearchOpen: boolean;
-  filterValues: FilterValues
+  filterValues: FilterValues;
+  resultList: OpinionType[];
+  queryText: string;
 }
 
 const initialState: ResultState = {
@@ -28,10 +34,12 @@ const initialState: ResultState = {
     endYear: dayjs().year().toString(),
     endMonth: dayjs().month().toString(),
   },
+  resultList: [],
+  queryText: ''
 }
 
-export const mapSlice = createSlice({
-  name: 'map',
+export const resultSlice = createSlice({
+  name: 'result',
   initialState,
   reducers: {
     setAdvanceSearchOpen: (state, action) => {
@@ -40,9 +48,20 @@ export const mapSlice = createSlice({
     setFilterValue: (state, action) => {
       state.filterValues = { ...state.filterValues, ...action.payload };
     },
+    setResultList: (state, action) => {
+      state.resultList = action.payload;
+    },
+    setQueryText: (state, action) => {
+      state.queryText = action.payload;
+    }
   },
 })
 
-export const { setFilterValue, setAdvanceSearchOpen } = mapSlice.actions
+export const {
+  setFilterValue,
+  setAdvanceSearchOpen,
+  setResultList,
+  setQueryText
+} = resultSlice.actions
 
-export default mapSlice.reducer
+export default resultSlice.reducer
