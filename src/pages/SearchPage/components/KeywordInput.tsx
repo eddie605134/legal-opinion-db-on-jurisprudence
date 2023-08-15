@@ -28,6 +28,7 @@ const KeywordInput: React.FC<KeywordInputProps> = ({
               borderColor: 'primary.main',
             }
           }}
+          inputProps={{ style: { fontSize: '1.2rem' } }}
           onChange={onChange}
 
         />

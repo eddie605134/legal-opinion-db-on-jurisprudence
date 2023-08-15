@@ -15,19 +15,21 @@ const OpinionInput: React.FC<OpinionInputProps> = ({
 }) => {
   return (
     <Fade in={isVisible} timeout={300}>
-      <div style={{ display: isVisible ? 'block' : 'none', height: '175px' }}>
+      <div style={{ display: isVisible ? 'block' : 'none', height: '295px' }}>
         <TextField
           value={value}
           placeholder="請輸入見解"
           multiline
-          rows={5}
+          rows={10}
           style={{ width: '745px' }}
           sx={{
+            fontSize: '1.2rem',
             backgroundColor: 'white',
             '&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
               borderColor: 'primary.main',
             }
           }}
+          inputProps={{ style: { fontSize: '1.2rem' } }}
           onChange={onChange}
         />
       </div>
