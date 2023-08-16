@@ -30,6 +30,8 @@ const toOpinion = (data: OpinionType): OpinionType => ({
   jud_url: data.jud_url,
   case_num: data.case_num,
   opinion: data.opinion,
+  csv_index: data.x_df_index,
+  x_df_index: data.x_df_index
 });
 
 // p1取得見解

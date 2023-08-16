@@ -27,6 +27,8 @@ export type OpinionType = {
   jud_url: string;
   case_num: string;
   opinion: string;
+  x_df_index: number;
+  csv_index?: number;
 }
 
 export type ResOpinionType = {
