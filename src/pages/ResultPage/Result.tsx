@@ -1,232 +1,229 @@
 // ResultPage.tsx
-import React from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/store'
 import { setAdvanceSearchOpen } from '@/store/resultSlice';
+
+import { TableVirtuoso, TableComponents } from 'react-virtuoso';
+import ClipboardJS from 'clipboard';
 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { Button, Checkbox, Container, Drawer, FormControl, FormControlLabel, FormGroup, InputLabel, List, ListItem, ListItemButton, ListItemText, MenuItem, Select, SelectChangeEvent, Slider, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import Paper from '@mui/material/Paper';
+import { SelectChangeEvent, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import Tooltip from '@mui/material/Tooltip';
+import Snackbar from '@mui/material/Snackbar';
+import SnackbarContent from '@mui/material/SnackbarContent';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import {
   SearchButton,
 } from '@/components/common/buttons';
 import SavedSearchIcon from '@mui/icons-material/SavedSearch';
 
-
-type Anchor = 'top' | 'left' | 'bottom' | 'right';
-
-function createData(
-  courthouse: string,
-  date: string,
-  url: string,
-  casenumber: string,
-  describe: string,
-) {
-  return { courthouse, date, url, casenumber, describe };
+interface Data {
+  court: string;
+  jud_date: string;
+  jud_url: string;
+  case_num: string;
+  opinion: string;
 }
-const rows = [
-  createData('台中地方法院', '2008/11/11', 'URL', '台灣台中地方法院民事判決97年度重訴第188號', '亦即在公有公共設施因設置或管理有欠缺之情況下，依客觀之觀察，...。'),
-  createData('桃園地方法院', '2018/7/5', 'URL', '台灣台中地方法院民事判決107年度重訴第586號', '亦即在公有公共設施因設置或管理有欠缺之情況下，依客觀之觀察，...。'),
-  createData('花蓮地方法院', '1999/12/12', 'URL', '台灣台中地方法院民事判決88年度重訴第118號', '亦即在公有公共設施因設置或管理有欠缺之情況下，依客觀之觀察，...。'),
+
+interface ColumnData {
+  dataKey: keyof Data;
+  label: string;
+  numeric?: boolean;
+  width?: number;
+}
+
+const columns: ColumnData[] = [
+  {
+    label: '地院',
+    dataKey: 'court',
+    width: 130,
+  },
+  {
+    label: '裁判日期',
+    dataKey: 'jud_date',
+  },
+  // {
+  //   label: '全文連結URL',
+  //   dataKey: 'jud_url',
+  // },
+  {
+    label: '案號',
+    dataKey: 'case_num',
+    numeric: true,
+    width: 190,
+  },
+  {
+    label: '見解',
+    dataKey: 'opinion',
+    numeric: true,
+  },
 ];
+
+const VirtuosoTableComponents: TableComponents<Data> = {
+  Scroller: React.forwardRef<HTMLDivElement>((props, ref) => (
+    <TableContainer component={Paper} {...props} ref={ref} />
+  )),
+  Table: (props) => (
+    <Table {...props} sx={{ borderCollapse: 'separate' }} />
+  ),
+  TableHead,
+  TableRow: ({ item: _item, ...props }) => <TableRow {...props} />,
+  TableBody: React.forwardRef<HTMLTableSectionElement>((props, ref) => (
+    <TableBody {...props} ref={ref} />
+  )),
+};
 
 function ResultPage() {
   const disPatch = useDispatch()
-  const [courthouse, setCourthouse] = React.useState('');
-  const courthouseChange = (event: SelectChangeEvent) => {
-    setCourthouse(event.target.value as string);
-  };
+  const [openSnackBar, setOpenSnackBar] = useState(false)
 
-  const [area, setArea] = React.useState('');
-  const areaChange = (event: SelectChangeEvent) => {
-    setArea(event.target.value as string);
-  };
+  const tableData = useSelector((state: RootState) => state.result.resultList)
 
-  const [month, setMonth1] = React.useState('');
-  const monthChange = (event: SelectChangeEvent) => {
-    setMonth1(event.target.value as string);
-  };
-
-  const [state, setState] = React.useState({
-    top: false,
-    left: false,
-    bottom: false,
-    right: false,
-  });
-
-  const toggleDrawer =
-    (anchor: Anchor, open: boolean) =>
-      (event: React.KeyboardEvent | React.MouseEvent | any) => {
-        if (
-          event.type === 'keydown' &&
-          ((event as React.KeyboardEvent).key === 'Tab' ||
-            (event as React.KeyboardEvent).key === 'Shift')
-        ) {
-          return;
-        }
-
-        setState({ ...state, [anchor]: open });
-      };
-  // 待修改！！
-  const list = (anchor: Anchor) => (
-    <div style={{width: '360px', margin: '20px 0px 0px 20px'}}>
-      <label style={{marginLeft: '140px'}}>進階搜尋</label>
-      <FormControl fullWidth style={{ marginTop: '10px', width: '330px' }}>
-      <InputLabel id="courthouse-select-label">法院別</InputLabel>
-      <Select
-        labelId="courthouse-select-label"
-        id="courthouse-select"
-        value={courthouse}
-        label="法院別"
-        onChange={courthouseChange}
-      >
-        <MenuItem value={10}>最高法院</MenuItem>
-        <MenuItem value={20}>高等法院</MenuItem>
-        <MenuItem value={30}>地方法院</MenuItem>
-      </Select>
-    </FormControl><FormControl fullWidth style={{ marginTop: '10px', width: '330px' }}>
-        <InputLabel id="area-select-label">（依法院別預設）</InputLabel>
-        <Select
-          labelId="area-select-label"
-          id="area-select"
-          value={area}
-          label="地區"
-          onChange={areaChange}
-        >
-          <MenuItem value={10}>台北地方法院</MenuItem>
-          <MenuItem value={20}>台中地方法院</MenuItem>
-          <MenuItem value={30}>新竹地方法院</MenuItem>
-        </Select>
-      </FormControl><FormGroup style={{ marginLeft: '20px' }}>
-        <FormControlLabel control={<Checkbox defaultChecked />} label="引述" />
-      </FormGroup>
-      <div style={{whiteSpace: 'nowrap'}}>
-      <FormControl fullWidth style={{ width: '70px' }}>
-        <InputLabel id="courthouse-select-label">110</InputLabel>
-        <Select
-          labelId="courthouse-select-label"
-          id="courthouse-select"
-          value={courthouse}
-          label=""
-          onChange={monthChange}
-        >
-          <MenuItem value={10}>1</MenuItem>
-          <MenuItem value={20}>2</MenuItem>
-          <MenuItem value={30}>3</MenuItem>
-        </Select>
-      </FormControl>
-      <label style={{ verticalAlign: 'bottom' }}>年</label>
-      <FormControl fullWidth style={{ width: '60px' }}>
-        <InputLabel id="courthouse-select-label">1</InputLabel>
-        <Select
-          labelId="courthouse-select-label"
-          id="courthouse-select"
-          value={courthouse}
-          label=""
-          onChange={monthChange}
-        >
-          <MenuItem value={10}>1</MenuItem>
-          <MenuItem value={20}>2</MenuItem>
-          <MenuItem value={30}>3</MenuItem>
-        </Select>
-      </FormControl>
-      <label style={{ verticalAlign: 'bottom' }}>月</label>
-      <label style={{ verticalAlign: 'bottom' }}>-</label>
-      <FormControl fullWidth style={{ width: '70px' }}>
-        <InputLabel id="courthouse-select-label">112</InputLabel>
-        <Select
-          labelId="courthouse-select-label"
-          id="courthouse-select"
-          value={courthouse}
-          label=""
-          onChange={monthChange}
-        >
-          <MenuItem value={10}>1</MenuItem>
-          <MenuItem value={20}>2</MenuItem>
-          <MenuItem value={30}>3</MenuItem>
-        </Select>
-      </FormControl>
-      <label style={{ verticalAlign: 'bottom' }}>年</label>
-      <FormControl fullWidth style={{ width: '60px' }}>
-        <InputLabel id="courthouse-select-label">12</InputLabel>
-        <Select
-          labelId="courthouse-select-label"
-          id="courthouse-select"
-          value={courthouse}
-          label=""
-          onChange={monthChange}
-        >
-          <MenuItem value={10}>1</MenuItem>
-          <MenuItem value={20}>2</MenuItem>
-          <MenuItem value={30}>3</MenuItem>
-        </Select>
-      </FormControl>
-      <label style={{ verticalAlign: 'bottom' }}>月</label>
-      </div>
-      </div>
-  )
+  function fixedHeaderContent() {
   return (
-    <div style={{margin: '20px'}}>
-      <div style={{ marginTop: '10px' }}>
+    <TableRow>
+      {columns.map((column) => (
+        <TableCell
+          key={column.dataKey}
+          variant="head"
+          align="center"
+          style={{
+            width: column.width,
+            fontSize: '1.1rem',
+            fontWeight: 600,
+          }}
+          sx={{
+            backgroundColor: '#D6B894',
+          }}
+        >
+          {column.label}
+        </TableCell>
+      ))}
+    </TableRow>
+  );
+}
+
+const copyToClipboard = (value: string) => {
+  const textarea = document.createElement('textarea');
+  textarea.value = value;
+  document.body.appendChild(textarea);
+  textarea.select();
+  document.execCommand('copy');
+  document.body.removeChild(textarea);
+  setOpenSnackBar(true)
+}
+
+const contentFormat = (row: Data, column: ColumnData, dataKey: string) => {
+  if (dataKey === 'case_num') {
+    return (
+      <a
+        href={row['jud_url']}
+        target='_blank'
+        style={{
+          color: '#1977db'
+        }}
+      >
+        {row[column.dataKey]}
+      </a>
+    )
+  }
+
+  if (dataKey === 'opinion') {
+    return (
+      <Tooltip
+        placement="bottom"
+        arrow
+        title="點擊複製見解"
+        onClick={() => copyToClipboard(row[column.dataKey])}
+        sx={{
+          cursor: 'pointer',
+          backgroundColor: '#D6B894',
+          color: '#5F5346',
+        }}
+      >
+        <div 
+          style={{ cursor: 'pointer' }}
+        >
+          {row[column.dataKey]}
+        </div>
+      </Tooltip>
+    )
+  }
+  return <div>{row[column.dataKey]}</div>
+
+}
+
+function rowContent(_index: number, row: Data) {
+  return (
+    <React.Fragment>
+      {columns.map((column) => (
+        <TableCell
+          key={column.dataKey}
+          align={column.numeric || false ? 'left' : 'center'}
+          style={{
+            fontSize: '1rem',
+          }}
+        >
+          {contentFormat(row, column, column.dataKey)}
+        </TableCell>
+      ))}
+    </React.Fragment>
+  );
+}
+
+  return (
+    <div style={{marginLeft: '-30px'}}>
+      <div style={{ marginTop: '0px' }}>
         {(['left'] as const).map((anchor) => (
           <React.Fragment key={anchor}>
             <SearchButton
               endIcon={<SavedSearchIcon />}
-              onClick={ () => {
+              onClick={() => {
                 disPatch(setAdvanceSearchOpen(true))
               }}
             >
               進階搜尋
             </SearchButton>
-            <Drawer
-              anchor={anchor}
-              open={state[anchor]}
-              onClose={toggleDrawer(anchor, false)}
-            >
-              {list(anchor)}
-            </Drawer>
           </React.Fragment>
         ))}
       </div>
       {/* <div style={{width: '70%', position: 'relative', float: 'right' }}> */}
       <div style={{ marginTop: '10px' }}>
-        <TableContainer>
-          <Table aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell align="center">地院</TableCell>
-                <TableCell align="center">裁判日期</TableCell>
-                <TableCell align="center">全文連結URL</TableCell>
-                <TableCell align="center">案號</TableCell>
-                <TableCell align="center">見解</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row) => (
-                <TableRow
-                  key={row.courthouse}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                  <TableCell component="th" scope="row" align="center">
-                    {row.courthouse}
-                  </TableCell>
-                  <TableCell align="center">{row.date}</TableCell>
-                  <TableCell>{row.url}</TableCell>
-                  <TableCell>{row.casenumber}</TableCell>
-                  <TableCell>{row.describe}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <Paper style={{ height: '90vh', width: '100%' }}>
+          <TableVirtuoso
+            data={tableData}
+            components={VirtuosoTableComponents}
+            fixedHeaderContent={fixedHeaderContent}
+            itemContent={rowContent}
+          />
+        </Paper>
       </div>
-      {/* <Box 
-        display="flex" 
-        justifyContent="center" 
-        alignItems="flex-start"
-        height="calc(100vh - 48px)"
-        pt={8}
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        open={openSnackBar}
+        message="已複製見解"
+        autoHideDuration={2000}
+        onClose={() => setOpenSnackBar(false)}
       >
-      </Box> */}
+        <SnackbarContent
+          style={{
+            backgroundColor: 'white',
+            color: 'black',
+            display: 'flex',
+            alignItems: 'center',
+            width: '100px' 
+          }}
+          message={
+            <span style={{ display: 'flex', alignItems: 'center' }}>
+              <CheckCircleIcon style={{ color: 'green', marginRight: '10px' }} />
+              已複製見解
+            </span>
+          }
+  />
+      </Snackbar>
     </div>
 
   );

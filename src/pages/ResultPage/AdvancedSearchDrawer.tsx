@@ -39,7 +39,7 @@ const AdvancedSearchDrawer = () => {
       alignItems: 'center',
       border: '6px solid #5F5346',
       borderRadius: '10px',
-      position: 'relative'
+      position: 'relative',
     }}>
       <CancelIcon />
       <Typography variant="h5" sx={{

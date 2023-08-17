@@ -11,13 +11,16 @@ import {
   ResGenOpinionType
 } from '@/types/search';
 import { get } from '@/utils/axios';
+import dayjs from 'dayjs';
 
 const toOpinion = (data: OpinionType): OpinionType => ({
   court: data.court,
-  jud_date: data.jud_date,
+  jud_date: dayjs(data.jud_date).format('YYYY/MM/DD'),
   jud_url: data.jud_url,
   case_num: data.case_num,
   opinion: data.opinion,
+  csv_index: data.x_df_index,
+  x_df_index: data.x_df_index
 });
 
 // p2取得見解by keyword

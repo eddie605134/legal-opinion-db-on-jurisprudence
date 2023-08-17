@@ -29,7 +29,10 @@ const Sider = () => {
   const pathIsMap = location.pathname === '/map';
   const pathIsResult = location.pathname === '/result'
   return (
-    <div>
+    <div style={{
+      position: 'sticky',
+      top: '20px',
+    }}>
       {pathIsMap && <TaiwanSVG />}
       {pathIsResult && advanceSearchOpen && <AdvancedSearchDrawer />}
     </div>

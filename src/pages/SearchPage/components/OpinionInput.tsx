@@ -5,12 +5,14 @@ import Fade from '@mui/material/Fade';
 interface OpinionInputProps {
   isVisible: boolean;
   value: string;
+  width?: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const OpinionInput: React.FC<OpinionInputProps> = ({
   isVisible,
   value,
+  width = '745px',
   onChange,
 }) => {
   return (
@@ -21,7 +23,7 @@ const OpinionInput: React.FC<OpinionInputProps> = ({
           placeholder="請輸入見解"
           multiline
           rows={10}
-          style={{ width: '745px' }}
+          style={{ width: width }}
           sx={{
             fontSize: '1.2rem',
             backgroundColor: 'white',

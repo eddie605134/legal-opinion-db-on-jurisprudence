@@ -118,12 +118,14 @@ function SearchPage() {
           <KeywordInput
           isVisible={value === '1'}
           value={keyword}
+          width="850px"
           onChange={handleKeywordChange}
           />}
         {value === '2' &&
           <OpinionInput
             isVisible={value === '2'}
             value={opinion}
+            width="850px"
             onChange={handleOpinionChange}
           />}
 

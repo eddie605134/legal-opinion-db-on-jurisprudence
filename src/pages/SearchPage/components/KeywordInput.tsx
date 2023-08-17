@@ -5,12 +5,14 @@ import Fade from '@mui/material/Fade';
 interface KeywordInputProps {
   isVisible: boolean;
   value: string;
+  width?: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const KeywordInput: React.FC<KeywordInputProps> = ({
   isVisible,
   value,
+  width = '745px',
   onChange,
 }) => {
   return (
@@ -19,7 +21,7 @@ const KeywordInput: React.FC<KeywordInputProps> = ({
         <TextField
           value={value}
           placeholder="請輸入關鍵字"
-          style={{ width: '745px' }}
+          style={{ width: width }}
           variant="outlined"
           size="small"
           sx={{
