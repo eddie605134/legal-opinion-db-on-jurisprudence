@@ -54,8 +54,6 @@ const HomePage = () => {
     setMainFlexBasis((pathIsMap || (pathIsResult && advanceSearchOpen)) ? '66.66%' : '100%');
   }, [pathIsMap, pathIsResult, advanceSearchOpen]);
 
-  console.log('pathIsResult', pathIsResult);
-
   return (
     <>
       <Header />

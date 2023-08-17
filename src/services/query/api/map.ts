@@ -6,11 +6,16 @@ const toCourtInfo = (data: CurtType): CurtType => ({
   court: data.court,
   num_juds: data.num_juds,
   num_opinions: data.num_opinions,
-  common_opinion1: data.common_opinion1,
-  common_opinion2: data.common_opinion2,
-  common_opinion3: data.common_opinion3,
-  common_opinion4: data.common_opinion4,
-  common_opinion5: data.common_opinion5,
+  common_opinion_index1: data.common_opinion_index1,
+  common_opinion_index2: data.common_opinion_index2,
+  common_opinion_index3: data.common_opinion_index3,
+  common_opinion_index4: data.common_opinion_index4,
+  common_opinion_index5: data.common_opinion_index5,
+  common_opinion_topic1: data.common_opinion_topic1,
+  common_opinion_topic2: data.common_opinion_topic2,
+  common_opinion_topic3: data.common_opinion_topic3,
+  common_opinion_topic4: data.common_opinion_topic4,
+  common_opinion_topic5: data.common_opinion_topic5,
 });
 
 // 該法院相關資訊
@@ -30,13 +35,14 @@ const toOpinion = (data: OpinionType): OpinionType => ({
   jud_url: data.jud_url,
   case_num: data.case_num,
   opinion: data.opinion,
-  csv_index: data.x_df_index,
-  x_df_index: data.x_df_index
+  csv_index: data.csv_index,
+  order_index: data.order_index,
+  distance: data.distance
 });
 
 // p1取得見解
 export const getOpinionByCourtIndex = async ({ court, opinionIndex }: {court: number, opinionIndex: number}): Promise<{ list: OpinionType[], queryText: string }> => {
-  const res:AxiosResponse<ResType<ResOpinionType>> = await get(`/tfidf/court/${court}/opinion/${opinionIndex}}`);
+  const res:AxiosResponse<ResType<ResOpinionType>> = await get(`/tfidf/court/${court}/opinion/${opinionIndex}`);
 
   const list: OpinionType[] = res.data.content.data.map((item: OpinionType) => toOpinion(item));
 
