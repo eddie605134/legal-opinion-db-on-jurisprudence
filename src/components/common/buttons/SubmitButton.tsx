@@ -20,7 +20,10 @@ export const SubmitButton: React.FC<SubmitButtonProps> = ({
       color="success"
       loading={isLoading}
       endIcon={endIcon}
-      sx={{ fontWeight: 600, fontSize: '1rem', }}
+      sx={{
+        fontWeight: 600,
+        fontSize: '1rem',
+      }}
       onClick={onClick}
     >
     {children}

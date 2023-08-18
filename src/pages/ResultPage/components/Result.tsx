@@ -247,7 +247,7 @@ function ResultPage() {
         </Paper>
       </div>
       <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         open={openSnackBar}
         message="已複製見解"
         autoHideDuration={2000}
@@ -255,7 +255,7 @@ function ResultPage() {
       >
         <SnackbarContent
           style={{
-            backgroundColor: 'white',
+            backgroundColor: '#FDF3E7',
             color: 'black',
             display: 'flex',
             alignItems: 'center',
@@ -263,7 +263,7 @@ function ResultPage() {
           }}
           message={
             <span style={{ display: 'flex', alignItems: 'center' }}>
-              <CheckCircleIcon style={{ color: 'green', marginRight: '10px' }} />
+              <CheckCircleIcon style={{ color: '#52b27b', marginRight: '10px' }} />
               已複製見解
             </span>
           }

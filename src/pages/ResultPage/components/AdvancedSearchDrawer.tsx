@@ -2,12 +2,15 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { RootState } from '@/store';
+import { useTheme } from '@mui/system';
 import { setFilterValue, setAdvanceSearchOpen } from '@/store/resultSlice';
 
 import { Typography, Card, Checkbox, FormControl, FormControlLabel, FormGroup, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
-import { useTheme } from '@mui/system';
+import { SubmitButton } from '@/components/common/buttons';
+
 
 const CancelIcon = () => {
   const disPatch = useDispatch()
@@ -153,7 +156,7 @@ const AdvancedSearchDrawer = () => {
           </Select>
         </FormControl>
       </div>
-      <div className="" style={{ width: '84%', marginBottom: '12px', display: 'flex', justifyContent: 'space-between' }}>
+      <div className="" style={{ width: '84%', marginBottom: '30px', display: 'flex', justifyContent: 'space-between' }}>
         <FormControl style={{ width: '45%' }}>
           <InputLabel id="courthouse-select-label" sx={{
           background: '#FDF3E7',
@@ -196,6 +199,15 @@ const AdvancedSearchDrawer = () => {
             <MenuItem value={12}>12</MenuItem>
           </Select>
         </FormControl>
+      </div>
+      <div className="">
+        <SubmitButton
+          // isLoading={isRandomLoading}
+          endIcon={<FilterAltIcon />}
+          onClick={() => { }}
+        >
+          篩選
+        </SubmitButton>
       </div>
     </Card>
   )
