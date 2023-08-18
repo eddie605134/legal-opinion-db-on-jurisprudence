@@ -161,16 +161,20 @@ const Information = () => {
         <div key='0' style={{ display: 'block', marginBottom: '15px' }}>
           <Button
             value='0'
-            style={{ width: '100%', fontSize: '1rem', fontWeight: 'bold' }}
             sx={{
+              backgroundColor: selectMapValue == '0' ? 'brown' : 'rgb(231, 180, 180)',
+              color: selectMapValue == '0' ? 'white' : 'black',
               '&:hover': {
                 backgroundColor: 'brown',
                 color: 'white',
               },
             }}
-            className={
-              selectMapValue == '0' ? 'high-button-click' : 'high-button-nonclick'
-            }
+            style={{
+              width: '100%',
+              fontSize: '1rem',
+              fontWeight: 'bold',
+            }}
+            
           >
             {supremeCourt}
           </Button>
@@ -180,21 +184,20 @@ const Information = () => {
             <Box key={item.id}>
               <Button
                 value={item.id}
+                sx={{
+                  backgroundColor: selectMapValue == item.id ? '#52b27b' : '#94d6b1',
+                  color: selectMapValue == item.id ? 'white' : 'black',
+                  '&:hover': {
+                    backgroundColor: '#52B27B',
+                    color: 'white',
+                  },
+                }}
                 style={{
                   marginBottom: '5px',
                   whiteSpace: 'pre-wrap',
                   fontSize: '1rem',
                   fontWeight: 'bold',
                 }}
-                sx={{
-                  '&:hover': {
-                    backgroundColor: '#52b27b',
-                    color: 'white',
-                  },
-                }}
-                className={
-                  selectMapValue == item.id ? 'button-click' : 'button-nonclick'
-                }
               >
                 {item.label}
               </Button>
