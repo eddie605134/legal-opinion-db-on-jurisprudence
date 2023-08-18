@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { setSelectMap } from '@/store/mapSlice';
+import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+
+import { setSelectMap } from '@/store/mapSlice';
 import { RootState } from '@/store';
+import { setResultList, setQueryText } from '@/store/resultSlice';
+
+import { CurtType } from '@/types/map';
 import { useSearchOpinionByCourtIndex, useCourtInfo } from '@/services/query';
+
 import {
   FormLabel,
   Accordion,
@@ -11,12 +17,12 @@ import {
   Typography,
   Box,
   Button,
+  Tooltip,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Loading from '@/components/common/Loading';
+
 import "./mapPage.css"
-import { CurtType } from '@/types/map';
-import { setResultList } from '@/store/resultSlice';
-import { useNavigate } from 'react-router-dom';
 
 const Information = () => {
 
@@ -48,7 +54,8 @@ const Information = () => {
     const fetchData = refetchSearchOpinionByCourtIndex;
     const { data } = await fetchData();
     if (data) {
-      await dispatch(setResultList(data));
+      await dispatch(setResultList(data.list));
+      await dispatch(setQueryText(data.queryText))
       navigate('/result');
     }
   };
@@ -56,7 +63,7 @@ const Information = () => {
   const {
     refetch: refetchSearchOpinionByCourtIndex,
     error: SearchOpinionByCourtIndexError,
-    isLoading: SearchOpinionByCourtIndexLoading,
+    isFetching: SearchOpinionByCourtIndexLoading,
   } = useSearchOpinionByCourtIndex({courtId: +selectMapValue, opinionIndex: selectOpinion});
 
 
@@ -74,6 +81,7 @@ const Information = () => {
     common_opinion_topic3: '',
     common_opinion_topic4: '',
     common_opinion_topic5: '',
+    jud_date: '',
   });
 
   const [courtInfo, setCourtInfo] = useState(toInitCourtInfo);
@@ -94,6 +102,7 @@ const Information = () => {
         common_opinion_topic3: event.list[0].common_opinion_topic3,
         common_opinion_topic4: event.list[0].common_opinion_topic4,
         common_opinion_topic5: event.list[0].common_opinion_topic5,
+        jud_date: event.list[0].jud_date,
       }));
     }
   };
@@ -139,28 +148,50 @@ const Information = () => {
     },
   ];
 
+  // Loading <Loading />
+
   return (
     <div>
+      { SearchOpinionByCourtIndexLoading && <Loading /> }
       <div onClick={handleButtonClick}>
         <Box key='0' sx={{ display: 'block', marginBottom: '15px' }}>
           <Button
             value='0'
-            style={{ width: '100%' }}
+            style={{ width: '100%', fontSize: '1rem', fontWeight: 'bold' }}
             className={
-              selectMapValue == '0' ? 'button-click' : 'button-nonclick'
-            }>
+              selectMapValue == '0' ? 'high-button-click' : 'high-button-nonclick'
+            }
+            sx={{
+              '&:hover': {
+                backgroundColor: 'brown',
+                color: 'white',
+              },
+            }}
+          >
             {supremeCourt}
           </Button>
         </Box>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
           {courtItems.map((item) => (
             <Box key={item.id}>
               <Button
                 value={item.id}
-                style={{ marginBottom: '5px', whiteSpace: 'pre-wrap' }}
+                style={{
+                  marginBottom: '5px',
+                  whiteSpace: 'pre-wrap',
+                  fontSize: '1rem',
+                  fontWeight: 'bold',
+                }}
                 className={
                   selectMapValue == item.id ? 'button-click' : 'button-nonclick'
-                }>
+                }
+                sx={{
+                  '&:hover': {
+                    backgroundColor: '#52b27b',
+                    color: 'white',
+                  },
+                }}
+              >
                 {item.label}
               </Button>
             </Box>
@@ -168,22 +199,29 @@ const Information = () => {
         </div>
       </div>
       <div>
-          <FormLabel className='setLabel'>最高法院</FormLabel>
-          <FormLabel className='setLabel'>裁判日期：民國107年1月1日～民國112年12月31日</FormLabel>
-          <FormLabel className='setLabel'>共計{courtInfo.num_juds}篇民事案件判決書</FormLabel>
-          <FormLabel className='setLabel'>共找出{courtInfo.num_opinions}筆見解</FormLabel>
+        <FormLabel sx={{pl: 2, fontSize: '1.1rem', fontWeight: 600, color: '#5F5346'}} className='setLabel'>{courtInfo.court}</FormLabel>
+        <FormLabel sx={{ pl: 2, fontSize: '1.1rem', fontWeight: 600, color: '#5F5346' }} className='setLabel'>{`裁判日期：${courtInfo.jud_date}`}</FormLabel>
+          <FormLabel sx={{pl: 2, fontSize: '1.1rem', fontWeight: 600, color: '#5F5346'}} className='setLabel'>共計{courtInfo.num_juds}篇民事案件判決書</FormLabel>
+        <FormLabel className='setLabel' sx={{
+          mb: 2,
+          pl: 2, fontSize: '1.1rem', fontWeight: 600, color: '#5F5346'
+        }}>共找出{courtInfo.num_opinions}筆見解</FormLabel>
           {accordionData.map((item, index) => (
             <Accordion key={index}>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls={`panel${index}-content`}
                 id={`panel${index}-header`}
-                sx={{ backgroundColor: 'lightgray' }}
+                sx={{ backgroundColor: '#D6B894', color: '#5F5346'}}
               >
-                <Typography>{`最常見的見解${index + 1}-${item.theme}`}</Typography>
+                <Typography sx={{ fontWeight: 600, fontSize: '1rem' }}>{`最常見的見解${index + 1}-${item.theme}`}</Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <Typography onClick={() => handleOpinionClick(index + 1)}>{item.details}</Typography>
+                <Tooltip title="點擊見解查詢" placement="left" arrow>
+                  <Typography sx={{
+                    cursor: 'pointer',
+                  }} onClick={() => handleOpinionClick(index + 1)}>{item.details}</Typography>
+                </Tooltip>
               </AccordionDetails>
             </Accordion>
           ))}

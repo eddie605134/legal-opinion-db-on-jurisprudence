@@ -91,6 +91,10 @@ function SearchPage() {
   useEffect(() => {
     if (!searchOpinionLoading && !opinionError) {
       navigate('/result');
+
+      setTimeout(() => {
+        window.scrollTo({ top: 150, behavior: 'smooth' });
+      }, 300)
     }
   }, [searchOpinionLoading]);
 

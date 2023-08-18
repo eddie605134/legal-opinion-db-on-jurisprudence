@@ -1,6 +1,7 @@
 import type { AxiosResponse } from 'axios';
 import { ResCurtType, CurtType, OpinionType, ResOpinionType, ResType } from '@/types/map';
 import { get } from '@/utils/axios';
+import dayjs from 'dayjs';
 
 const toCourtInfo = (data: CurtType): CurtType => ({
   court: data.court,
@@ -16,6 +17,7 @@ const toCourtInfo = (data: CurtType): CurtType => ({
   common_opinion_topic3: data.common_opinion_topic3,
   common_opinion_topic4: data.common_opinion_topic4,
   common_opinion_topic5: data.common_opinion_topic5,
+  jud_date: data.jud_date,
 });
 
 // 該法院相關資訊
@@ -31,11 +33,12 @@ export const getCourtInfo= async (court: number): Promise<{ list: CurtType[] }> 
 
 const toOpinion = (data: OpinionType): OpinionType => ({
   court: data.court,
-  jud_date: data.jud_date,
+  jud_date: dayjs(data.jud_date).format('YYYY/MM/DD'),
   jud_url: data.jud_url,
   case_num: data.case_num,
   opinion: data.opinion,
-  csv_index: data.csv_index,
+  csv_index: data.x_df_index,
+  x_df_index: data.x_df_index,
   order_index: data.order_index,
   distance: data.distance
 });

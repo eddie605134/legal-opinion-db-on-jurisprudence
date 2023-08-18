@@ -1,24 +1,29 @@
 // ResultPage.tsx
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+
 import { RootState } from '@/store'
 import { setAdvanceSearchOpen } from '@/store/resultSlice';
 
 import { TableVirtuoso, TableComponents } from 'react-virtuoso';
-import ClipboardJS from 'clipboard';
 
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
-import { SelectChangeEvent, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 import Tooltip from '@mui/material/Tooltip';
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import SavedSearchIcon from '@mui/icons-material/SavedSearch';
+
 import {
   SearchButton,
 } from '@/components/common/buttons';
-import SavedSearchIcon from '@mui/icons-material/SavedSearch';
+
 
 interface Data {
   court: string;
@@ -82,97 +87,124 @@ function ResultPage() {
 
   const tableData = useSelector((state: RootState) => state.result.resultList)
 
+  // table組件================================
   function fixedHeaderContent() {
-  return (
-    <TableRow>
-      {columns.map((column) => (
-        <TableCell
-          key={column.dataKey}
-          variant="head"
-          align="center"
-          style={{
-            width: column.width,
-            fontSize: '1.1rem',
-            fontWeight: 600,
-          }}
+    return (
+      <TableRow>
+        {columns.map((column) => (
+          <TableCell
+            key={column.dataKey}
+            variant="head"
+            align="center"
+            style={{
+              width: column.width,
+              fontSize: '1.1rem',
+              fontWeight: 600,
+              position: 'sticky',
+              top: 0,
+              zIndex: 1,
+            }}
+            sx={{
+              backgroundColor: '#D6B894',
+            }}
+          >
+            {column.label}
+          </TableCell>
+        ))}
+      </TableRow>
+    );
+  }
+
+  const copyToClipboard = (value: string) => {
+    const textarea = document.createElement('textarea');
+    textarea.value = value;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    setOpenSnackBar(true)
+  }
+
+  const contentFormat = (row: Data, column: ColumnData, dataKey: string) => {
+    if (dataKey === 'case_num') {
+      return (
+        <Tooltip
+          placement="bottom"
+          arrow
+          title="點擊開啟連結"
           sx={{
+            cursor: 'pointer',
             backgroundColor: '#D6B894',
+            color: '#5F5346',
           }}
         >
-          {column.label}
-        </TableCell>
-      ))}
-    </TableRow>
-  );
-}
+          <a
+            href={row['jud_url']}
+            target='_blank'
+            style={{
+              color: '#1977db'
+            }}
+          >
+            {row[column.dataKey]}
+          </a>
+        </Tooltip>
+      )
+    }
 
-const copyToClipboard = (value: string) => {
-  const textarea = document.createElement('textarea');
-  textarea.value = value;
-  document.body.appendChild(textarea);
-  textarea.select();
-  document.execCommand('copy');
-  document.body.removeChild(textarea);
-  setOpenSnackBar(true)
-}
-
-const contentFormat = (row: Data, column: ColumnData, dataKey: string) => {
-  if (dataKey === 'case_num') {
-    return (
-      <a
-        href={row['jud_url']}
-        target='_blank'
-        style={{
-          color: '#1977db'
-        }}
-      >
-        {row[column.dataKey]}
-      </a>
-    )
-  }
-
-  if (dataKey === 'opinion') {
-    return (
-      <Tooltip
-        placement="bottom"
-        arrow
-        title="點擊複製見解"
-        onClick={() => copyToClipboard(row[column.dataKey])}
-        sx={{
-          cursor: 'pointer',
-          backgroundColor: '#D6B894',
-          color: '#5F5346',
-        }}
-      >
-        <div 
-          style={{ cursor: 'pointer' }}
-        >
-          {row[column.dataKey]}
-        </div>
-      </Tooltip>
-    )
-  }
-  return <div>{row[column.dataKey]}</div>
-
-}
-
-function rowContent(_index: number, row: Data) {
-  return (
-    <React.Fragment>
-      {columns.map((column) => (
-        <TableCell
-          key={column.dataKey}
-          align={column.numeric || false ? 'left' : 'center'}
-          style={{
-            fontSize: '1rem',
+    if (dataKey === 'opinion') {
+      return (
+        <Tooltip
+          placement="bottom"
+          arrow
+          title="點擊複製見解"
+          onClick={() => copyToClipboard(row[column.dataKey])}
+          sx={{
+            cursor: 'pointer',
+            backgroundColor: '#D6B894',
+            color: '#5F5346',
           }}
         >
-          {contentFormat(row, column, column.dataKey)}
-        </TableCell>
-      ))}
-    </React.Fragment>
-  );
-}
+          <div 
+            style={{ cursor: 'pointer' }}
+          >
+            {row[column.dataKey]}
+          </div>
+        </Tooltip>
+      )
+    }
+    return <div>{row[column.dataKey]}</div>
+
+  }
+
+  function rowContent(_index: number, row: Data) {
+    return (
+      <React.Fragment>
+        {columns.map((column) => (
+          <TableCell
+            key={column.dataKey}
+            align={column.numeric || false ? 'left' : 'center'}
+            style={{
+              fontSize: '1rem',
+            }}
+          >
+            {contentFormat(row, column, column.dataKey)}
+          </TableCell>
+        ))}
+      </React.Fragment>
+    );
+  }
+
+  // ================================
+
+  const searchOpening = useSelector((state: RootState) => state.result.advanceSearchOpen)
+
+  const advanceSearchOpenHandler = () => {
+    if (searchOpening) {
+      disPatch(setAdvanceSearchOpen(false))
+    } else {
+      disPatch(setAdvanceSearchOpen(true))
+    }
+  }
 
   return (
     <div style={{marginLeft: '-30px'}}>
@@ -181,9 +213,7 @@ function rowContent(_index: number, row: Data) {
           <React.Fragment key={anchor}>
             <SearchButton
               endIcon={<SavedSearchIcon />}
-              onClick={() => {
-                disPatch(setAdvanceSearchOpen(true))
-              }}
+              onClick={() => advanceSearchOpenHandler()}
             >
               進階搜尋
             </SearchButton>

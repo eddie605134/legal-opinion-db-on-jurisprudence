@@ -2,9 +2,10 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom'; 
 import { useTheme } from '@mui/system';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { RootState } from '@/store';
+import { setAdvanceSearchOpen } from '@/store/resultSlice';
 
 import Grid from '@mui/material/Unstable_Grid2';
 import Box from '@mui/material/Box';
@@ -17,7 +18,7 @@ import { AnimatedGrid } from '@/components/common/AnimatedGrid';
 
 import useChangeTitle from '@/hooks/useChangeTitle';
 import TaiwanSVG from './MapPage/TaiwanSVG';
-import AdvancedSearchDrawer from './ResultPage/AdvancedSearchDrawer';
+import AdvancedSearchDrawer from './ResultPage/components/AdvancedSearchDrawer';
 import { log } from 'console';
 
 
@@ -41,11 +42,14 @@ const Sider = () => {
 
 const HomePage = () => {
   const location = useLocation();
+  const dispatch = useDispatch();
   const theme = useTheme();
+
   const advanceSearchOpen = useSelector((state: RootState) => state.result.advanceSearchOpen);
   useChangeTitle();
 
   const pathIsMap = location.pathname === '/map';
+  const pathIsSearch = location.pathname === '/search';
   const pathIsResult = location.pathname === '/result'
   // 1. 設置初始狀態以防動畫失效
   const [sideFlexBasis, setSideFlexBasis] = useState('0%');
@@ -55,7 +59,16 @@ const HomePage = () => {
   useEffect(() => {
     setSideFlexBasis((pathIsMap || (pathIsResult && advanceSearchOpen)) ? '33.33%' : '0%');
     setMainFlexBasis((pathIsMap || (pathIsResult && advanceSearchOpen)) ? '66.66%' : '100%');
-  }, [pathIsMap, pathIsResult, advanceSearchOpen]);
+
+    if (pathIsMap || pathIsSearch) {
+      dispatch(setAdvanceSearchOpen(false));
+    }
+  }, [
+    pathIsMap,
+    pathIsSearch,
+    pathIsResult,
+    advanceSearchOpen
+  ]);
 
   return (
     <>

@@ -20,6 +20,7 @@ export type CurtType = {
   common_opinion_topic3: string;
   common_opinion_topic4: string;
   common_opinion_topic5: string;
+  jud_date: string;
 }
 
 export type ResCurtType = {
@@ -34,6 +35,7 @@ export type OpinionType = {
   opinion: string;
   distance: string;
   order_index: string;
+  x_df_index: string;
   csv_index?: string;
 }
 

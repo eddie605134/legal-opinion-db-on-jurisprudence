@@ -20,7 +20,9 @@ const toOpinion = (data: OpinionType): OpinionType => ({
   case_num: data.case_num,
   opinion: data.opinion,
   csv_index: data.x_df_index,
-  x_df_index: data.x_df_index
+  x_df_index: data.x_df_index,
+  order_index: data.order_index,
+  distance: data.distance
 });
 
 // p2取得見解by keyword
