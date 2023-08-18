@@ -14,38 +14,3 @@ body {
   box-sizing: border-box;
   font-family: 'Noto Sans TC';
 }
-
-/* 
-    地圖 stroke #ffffff  
-    地圖 fill #94D6B1
-*/
-.button-click {
-  background-color: #52b27b;
-  color: white;
-  font-weight: bold;
-}
-.button-nonclick {
-  background-color: #94d6b1;
-  color: black;
-}
-.high-button-click {
-  background-color: brown;
-  color: white;
-  font-weight: bold;
-}
-.high-button-nonclick {
-  background-color: rgb(231, 180, 180);
-  color: black;
-}
-.path-click {
-  stroke: #ffffff;
-  fill: #94d6b1;
-}
-.toppath-click {
-  stroke: brown;
-  stroke-width: 3;
-  fill: rgb(210, 166, 166);
-}
-.setLabel {
-  display: block;
-}

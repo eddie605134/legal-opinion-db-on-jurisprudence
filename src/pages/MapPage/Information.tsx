@@ -22,6 +22,8 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Loading from '@/components/common/Loading';
 
+import './mapPage.css'
+
 const Information = () => {
 
   const navigate = useNavigate();
@@ -156,23 +158,23 @@ const Information = () => {
     <div>
       { SearchOpinionByCourtIndexLoading && <Loading /> }
       <div onClick={handleButtonClick}>
-        <Box key='0' sx={{ display: 'block', marginBottom: '15px' }}>
+        <div key='0' style={{ display: 'block', marginBottom: '15px' }}>
           <Button
             value='0'
             style={{ width: '100%', fontSize: '1rem', fontWeight: 'bold' }}
-            className={
-              selectMapValue == '0' ? 'high-button-click' : 'high-button-nonclick'
-            }
             sx={{
               '&:hover': {
                 backgroundColor: 'brown',
                 color: 'white',
               },
             }}
+            className={
+              selectMapValue == '0' ? 'high-button-click' : 'high-button-nonclick'
+            }
           >
             {supremeCourt}
           </Button>
-        </Box>
+        </div>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
           {courtItems.map((item) => (
             <Box key={item.id}>
@@ -184,15 +186,15 @@ const Information = () => {
                   fontSize: '1rem',
                   fontWeight: 'bold',
                 }}
-                className={
-                  selectMapValue == item.id ? 'button-click' : 'button-nonclick'
-                }
                 sx={{
                   '&:hover': {
                     backgroundColor: '#52b27b',
                     color: 'white',
                   },
                 }}
+                className={
+                  selectMapValue == item.id ? 'button-click' : 'button-nonclick'
+                }
               >
                 {item.label}
               </Button>

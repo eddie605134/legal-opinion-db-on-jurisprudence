@@ -20,10 +20,6 @@ import useChangeTitle from '@/hooks/useChangeTitle';
 import TaiwanSVG from './MapPage/TaiwanSVG';
 import AdvancedSearchDrawer from './ResultPage/components/AdvancedSearchDrawer';
 
-import "@/pages/MapPage/mapPage.css"
-
-
-
 const Sider = () => {
   const location = useLocation();
   const advanceSearchOpen = useSelector((state: RootState) => state.result.advanceSearchOpen);

@@ -32,3 +32,38 @@
 .setLabel {
   display: block;
 }
+
+/* SVG 容器樣式 */
+svg {
+  max-height: 90vh;
+}
+
+/* 定義動畫 */
+@keyframes move {
+  0% {
+    transform: translate(-1px, -1px);
+    fill: #94d6b1;
+  }
+  50% {
+    fill: #52b27b;
+    transform: translate(-3px, -3px);
+  }
+  100% {
+    transform: translate(-1px, -1px);
+    fill: #94d6b1;
+  }
+}
+
+/* Path 元素的樣式 */
+path {
+  stroke: #a38561;
+  fill: transparent;
+  transition: 0.5s;
+  cursor: pointer;
+  z-index: 2;
+}
+
+/* Path 元素的 hover 效果 */
+path:hover {
+  animation: move 2s infinite;
+}
