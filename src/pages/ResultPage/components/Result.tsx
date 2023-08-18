@@ -220,7 +220,7 @@ function ResultPage() {
               endIcon={<SavedSearchIcon />}
               onClick={() => advanceSearchOpenHandler()}
               style={{
-                minWidth: '120px',
+                minWidth: '130px',
                 maxHeight: '40px',
                 paddingTop: '10px',
               }}

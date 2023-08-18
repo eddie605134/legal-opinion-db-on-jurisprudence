@@ -197,6 +197,7 @@ const Information = () => {
                   whiteSpace: 'pre-wrap',
                   fontSize: '1rem',
                   fontWeight: 'bold',
+                  height: '75px',
                 }}
               >
                 {item.label}
