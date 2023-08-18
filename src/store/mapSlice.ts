@@ -9,7 +9,7 @@ const initialState: MapState = {
 }
 
 export const mapSlice = createSlice({
-  name: 'map',
+  name: 'maper',
   initialState,
   reducers: {
     setSelectMap: (state, action) => {
