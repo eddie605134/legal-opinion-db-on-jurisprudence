@@ -20,7 +20,7 @@ import useChangeTitle from '@/hooks/useChangeTitle';
 import TaiwanSVG from './MapPage/TaiwanSVG';
 import AdvancedSearchDrawer from './ResultPage/components/AdvancedSearchDrawer';
 
-import "./MapPage/mapPage.css"
+import "@/pages/MapPage/mapPage.css"
 
 
 
