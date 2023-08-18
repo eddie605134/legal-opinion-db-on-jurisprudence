@@ -19,6 +19,7 @@ import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import SavedSearchIcon from '@mui/icons-material/SavedSearch';
+import Alert from '@mui/material/Alert';
 
 import {
   SearchButton,
@@ -206,19 +207,33 @@ function ResultPage() {
     }
   }
 
+  // =================================
+
+  const queryText = useSelector((state: RootState) => state.result.queryText)
+
   return (
     <div style={{marginLeft: '-30px'}}>
-      <div style={{ marginTop: '0px' }}>
+      <div style={{ marginTop: '0px', display: 'flex', alignItems: 'center' }}>
         {(['left'] as const).map((anchor) => (
           <React.Fragment key={anchor}>
             <SearchButton
               endIcon={<SavedSearchIcon />}
               onClick={() => advanceSearchOpenHandler()}
+              style={{
+                minWidth: '120px',
+                maxHeight: '40px',
+                paddingTop: '10px',
+              }}
             >
               進階搜尋
             </SearchButton>
           </React.Fragment>
         ))}
+        <div style={{ fontSize: '1.2rem', fontWeight: 600, marginLeft: '10px', marginTop: '5px' }}>
+          <Alert severity="success">
+            查詢條件: {queryText}
+          </Alert>
+        </div>
       </div>
       {/* <div style={{width: '70%', position: 'relative', float: 'right' }}> */}
       <div style={{ marginTop: '10px' }}>

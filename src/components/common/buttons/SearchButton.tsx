@@ -6,14 +6,17 @@ type SearchButtonProps = {
   children: React.ReactNode;
   endIcon?: React.ReactNode;
   isLoading?: boolean;
-  onClick: (() => void )| any;
+  onClick: (() => void) | any;
+  style?: React.CSSProperties;
 };
 
 export const SearchButton: React.FC<SearchButtonProps> = ({
   children,
   endIcon = <CreateIcon />,
   isLoading = false,
-  onClick }) => {
+  style = {},
+  onClick
+}) => {
   return (
     <LoadingButton
       type="button"
@@ -29,6 +32,7 @@ export const SearchButton: React.FC<SearchButtonProps> = ({
           backgroundColor: 'rgba(191, 163, 128)'
         }
       }}
+      style={style}
       onClick={onClick}
     >
       {children}
