@@ -57,6 +57,10 @@ const Information = () => {
       await dispatch(setResultList(data.list));
       await dispatch(setQueryText(data.queryText))
       navigate('/result');
+
+      setTimeout(() => {
+        window.scrollTo({ top: 150, behavior: 'smooth' });
+      }, 300)
     }
   };
 
