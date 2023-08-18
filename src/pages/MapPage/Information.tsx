@@ -22,8 +22,6 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Loading from '@/components/common/Loading';
 
-import "./mapPage.css"
-
 const Information = () => {
 
   const navigate = useNavigate();

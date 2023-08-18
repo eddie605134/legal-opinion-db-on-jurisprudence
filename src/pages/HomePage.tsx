@@ -19,7 +19,8 @@ import { AnimatedGrid } from '@/components/common/AnimatedGrid';
 import useChangeTitle from '@/hooks/useChangeTitle';
 import TaiwanSVG from './MapPage/TaiwanSVG';
 import AdvancedSearchDrawer from './ResultPage/components/AdvancedSearchDrawer';
-import { log } from 'console';
+
+import "./MapPage/mapPage.css"
 
 
 
