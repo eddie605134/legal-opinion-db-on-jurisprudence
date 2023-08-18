@@ -1,8 +1,10 @@
 import React from 'react';
-import { styled } from '@mui/system';
+import { useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { styled } from '@mui/system';
 
-import { tabs } from '@/constants';
+import { RootState } from '@/store'
+import { tabs, Tab } from '@/constants';
 
 const StyledNav = styled('nav')(({ theme }) => ({
   zIndex: 1,
@@ -60,6 +62,8 @@ const TabsComponent = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const resultList = useSelector((state: RootState) => state.result.resultList);
+
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     switch(newValue){
       case 0:
@@ -85,10 +89,19 @@ const TabsComponent = () => {
 
   const currentTabIndex = getTabIndex(location.pathname);
 
+  const filterTabWithResultList = (tab: Tab) => {
+    if (tab.index === 2) {
+      return resultList.length > 0;
+    }
+    return true;
+  }
+
   return (
     <StyledNav>
       {
-        tabs.map((tab) => (
+        tabs
+          .filter(filterTabWithResultList)
+          .map((tab) => (
           <StyledTab
             key={tab.index}
             className={currentTabIndex === tab.index ? 'selected' : ''}

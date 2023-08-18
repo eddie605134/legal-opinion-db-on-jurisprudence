@@ -1,4 +1,4 @@
-interface Tab  {
+export interface Tab  {
   label: string;
   zIndex: number;
   index: number;
