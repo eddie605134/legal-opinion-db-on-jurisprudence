@@ -209,7 +209,7 @@ const Information = () => {
       <div>
         <FormLabel sx={{pl: 2, fontSize: '1.1rem', fontWeight: 600, color: '#5F5346'}} className='setLabel'>{courtInfo.court}</FormLabel>
         <FormLabel sx={{ pl: 2, fontSize: '1.1rem', fontWeight: 600, color: '#5F5346' }} className='setLabel'>{`裁判日期：${courtInfo.jud_date}`}</FormLabel>
-          <FormLabel sx={{pl: 2, fontSize: '1.1rem', fontWeight: 600, color: '#5F5346'}} className='setLabel'>共計{courtInfo.num_juds}篇民事案件判決書</FormLabel>
+        {/* <FormLabel sx={{pl: 2, fontSize: '1.1rem', fontWeight: 600, color: '#5F5346'}} className='setLabel'>共計{courtInfo.num_juds}篇民事案件判決書</FormLabel> */}
         <FormLabel className='setLabel' sx={{
           mb: 2,
           pl: 2, fontSize: '1.1rem', fontWeight: 600, color: '#5F5346'

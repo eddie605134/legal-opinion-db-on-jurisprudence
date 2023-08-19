@@ -44,13 +44,15 @@ export default function App() {
             onClick={scrollToTop}
             style={{
               position: 'fixed',
-              bottom: '10px',
-              right: '10px',
+              bottom: '15px',
+              right: '15px',
               zIndex: 1000,
-              backgroundColor: 'white',
+              backgroundColor: 'rgb(20, 71, 113)',
+              color: 'white',
             }}
           >
-            <NavigationIcon />
+            TOP
+            {/* <NavigationIcon /> */}
           </IconButton>
         </Tooltip>
       
