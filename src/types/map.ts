@@ -20,7 +20,7 @@ export type CurtType = {
   common_opinion_topic3: string;
   common_opinion_topic4: string;
   common_opinion_topic5: string;
-  jud_date: string;
+  jud_date: string | number;
 }
 
 export type ResCurtType = {
@@ -29,7 +29,7 @@ export type ResCurtType = {
 
 export type OpinionType = {
   court: string;
-  jud_date: string;
+  jud_date: string | string;
   jud_url: string;
   case_num: string;
   opinion: string;

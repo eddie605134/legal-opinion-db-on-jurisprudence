@@ -12,10 +12,11 @@ import {
 } from '@/types/search';
 import { get } from '@/utils/axios';
 import dayjs from 'dayjs';
+import { formatIntegerDate } from '@/utils/formatIntegerDate';
 
 const toOpinion = (data: OpinionType): OpinionType => ({
   court: data.court,
-  jud_date: dayjs(data.jud_date).format('YYYY/MM/DD'),
+  jud_date: dayjs(formatIntegerDate(data.jud_date)).format('YYYY/MM/DD'),
   jud_url: data.jud_url,
   case_num: data.case_num,
   opinion: data.opinion,

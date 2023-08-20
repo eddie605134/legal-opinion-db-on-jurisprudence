@@ -1,6 +1,7 @@
 import type { AxiosResponse } from 'axios';
 import { ResCurtType, CurtType, OpinionType, ResOpinionType, ResType } from '@/types/map';
 import { get } from '@/utils/axios';
+import { formatIntegerDate } from '@/utils/formatIntegerDate';
 import dayjs from 'dayjs';
 
 const toCourtInfo = (data: CurtType): CurtType => ({
@@ -33,7 +34,7 @@ export const getCourtInfo= async (court: number): Promise<{ list: CurtType[] }> 
 
 const toOpinion = (data: OpinionType): OpinionType => ({
   court: data.court,
-  jud_date: dayjs(data.jud_date).format('YYYY/MM/DD'),
+  jud_date: dayjs(formatIntegerDate(data.jud_date)).format('YYYY/MM/DD'),
   jud_url: data.jud_url,
   case_num: data.case_num,
   opinion: data.opinion,
