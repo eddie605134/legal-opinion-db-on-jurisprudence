@@ -1,5 +1,6 @@
 import { createTheme } from '@mui/material/styles';
 import { red } from '@mui/material/colors';
+import { border } from '@mui/system';
 
 /**
  * 外部背景 #C0E5FE
@@ -79,8 +80,10 @@ const theme = createTheme({
       styleOverrides: {
         tooltip: {
           fontSize: "1em",
-          color: "#5F5346",
-          backgroundColor: "#D6B894"
+          fontWeight: "bold",
+          color: "#635649",
+          backgroundColor: "#e8c8a0",
+          border: "1px solid #a5a09c",
         }
       }
     }

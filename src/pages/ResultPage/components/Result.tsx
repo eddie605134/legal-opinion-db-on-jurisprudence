@@ -186,8 +186,8 @@ function ResultPage() {
             align={column.numeric || false ? 'left' : 'center'}
             style={{
               fontSize: '1rem',
-              // backgroundColor: _index % 2 === 0 ? '#f3f3f3' : '#ffffff', // 你可以自訂顏色
-              // backgroundColor: _index % 2 === 0 ? '#FDF3E7' : '#efd0aa',
+              // backgroundColor: _index % 2 === 0 ? '#f3f3f3' : '#ffffff',
+              backgroundColor: _index % 2 === 0 ? '#FDF3E7' : '#efd0aa',
             }}
           >
             {contentFormat(row, column, column.dataKey)}
