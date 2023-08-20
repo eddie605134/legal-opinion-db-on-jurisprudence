@@ -35,8 +35,8 @@ const Information = () => {
   const courtItems = [
     { id: '1', label: '臺灣高等法院' },
     { id: '2', label: '臺灣高等法院\n臺中分院' },
-    { id: '3', label: '臺灣高等法院\n臺南分院' },
-    { id: '4', label: '臺灣高等法院\n高雄分院' },
+    { id: '3', label: '臺灣高等法院\n高雄分院' },
+    { id: '4', label: '臺灣高等法院\n臺南分院' },
     { id: '5', label: '臺灣高等法院\n花蓮分院' },
     { id: '6', label: '福建高等法院\n金門分院' },
   ];
@@ -163,7 +163,7 @@ const Information = () => {
             value='0'
             sx={{
               backgroundColor: selectMapValue == '0' ? 'brown' : 'rgb(231, 180, 180)',
-              color: selectMapValue == '0' ? 'white' : 'black',
+              color: selectMapValue == '0' ? 'white' : '#554a3e',
               '&:hover': {
                 backgroundColor: 'brown',
                 color: 'white',
@@ -171,7 +171,7 @@ const Information = () => {
             }}
             style={{
               width: '100%',
-              fontSize: '1rem',
+              fontSize: '1.1rem',
               fontWeight: 'bold',
             }}
             
@@ -179,14 +179,14 @@ const Information = () => {
             {supremeCourt}
           </Button>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
           {courtItems.map((item) => (
             <Box key={item.id}>
               <Button
                 value={item.id}
                 sx={{
                   backgroundColor: selectMapValue == item.id ? '#52b27b' : '#94d6b1',
-                  color: selectMapValue == item.id ? 'white' : 'black',
+                  color: selectMapValue == item.id ? 'white' : '#5d5144',
                   '&:hover': {
                     backgroundColor: '#52B27B',
                     color: 'white',
@@ -195,7 +195,7 @@ const Information = () => {
                 style={{
                   marginBottom: '5px',
                   whiteSpace: 'pre-wrap',
-                  fontSize: '1rem',
+                  fontSize: '1.1rem',
                   fontWeight: 'bold',
                   height: '75px',
                 }}
@@ -207,12 +207,12 @@ const Information = () => {
         </div>
       </div>
       <div>
-        <FormLabel sx={{pl: 2, fontSize: '1.1rem', fontWeight: 600, color: '#5F5346'}} className='setLabel'>{courtInfo.court}</FormLabel>
-        <FormLabel sx={{ pl: 2, fontSize: '1.1rem', fontWeight: 600, color: '#5F5346' }} className='setLabel'>{`裁判日期：${courtInfo.jud_date}`}</FormLabel>
+        <FormLabel sx={{pl: 1, fontSize: '1.1rem', fontWeight: 600, color: '#5F5346'}} className='setLabel'>{courtInfo.court}</FormLabel>
+        <FormLabel sx={{ pl: 1, fontSize: '1.1rem', fontWeight: 600, color: '#5F5346' }} className='setLabel'>{`裁判日期：${courtInfo.jud_date}`}</FormLabel>
         {/* <FormLabel sx={{pl: 2, fontSize: '1.1rem', fontWeight: 600, color: '#5F5346'}} className='setLabel'>共計{courtInfo.num_juds}篇民事案件判決書</FormLabel> */}
         <FormLabel className='setLabel' sx={{
           mb: 2,
-          pl: 2, fontSize: '1.1rem', fontWeight: 600, color: '#5F5346'
+          pl: 1, fontSize: '1.1rem', fontWeight: 600, color: '#5F5346'
         }}>共找出{courtInfo.num_opinions}筆見解</FormLabel>
           {accordionData.map((item, index) => (
             <Accordion key={index}>
