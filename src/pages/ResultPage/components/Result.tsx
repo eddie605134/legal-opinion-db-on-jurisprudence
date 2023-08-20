@@ -233,7 +233,7 @@ function ResultPage() {
         ))}
         <div style={{ fontSize: '1.2rem', fontWeight: 600, marginLeft: '10px', marginTop: '5px' }}>
           <Alert severity="success">
-            查詢條件: {queryText}
+            搜尋條件: {queryText}
           </Alert>
         </div>
       </div>

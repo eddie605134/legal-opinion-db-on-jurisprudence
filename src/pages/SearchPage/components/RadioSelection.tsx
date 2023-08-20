@@ -15,7 +15,7 @@ const RadioSelection: React.FC<RadioSelectionProps> = ({ value, onChange }) => {
         id="demo-controlled-radio-buttons-group"
         sx={{ mr: 1 }}
       >
-        查詢條件：
+        搜尋條件：
       </Typography>
       <RadioGroup row value={value} onChange={onChange}>
         <FormControlLabel value="1" control={<Radio color="warning"/>} label="關鍵字搜尋" />

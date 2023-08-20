@@ -136,7 +136,7 @@ function SearchPage() {
           color: 'custom.layoutBorder.default',
           mb: 8
         }}>
-          查詢資訊
+          搜尋資訊
         </Typography>
 
         <RadioSelection value={value} onChange={handleChange} />
