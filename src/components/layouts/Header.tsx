@@ -56,7 +56,7 @@ function Header() {
           sx={{ cursor: 'pointer' }}
           onClick={() => navigate('/')} />
         <HeaderText>
-          <SpanText sx={{ml: 1, fontSize: '26px'}}>台灣地圖上的見解資料庫</SpanText>
+          <SpanText sx={{ml: 1, fontSize: '26px', cursor: 'pointer'}} onClick={() => navigate('/')}>台灣地圖上的見解資料庫-民事案件</SpanText>
         </HeaderText>
       </>
     </HeaderContainer>

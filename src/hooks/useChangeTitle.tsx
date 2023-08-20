@@ -13,7 +13,7 @@ const useChangeTitle = () => {
         document.title = currentTab.label;
       }
     } else {
-      document.title = '台灣地圖上的見解資料庫';
+      document.title = '台灣地圖上的見解資料庫-民事案件';
     }
   }, [location.pathname])
 }
