@@ -15,6 +15,7 @@ import Header from '@/components/layouts/Header'
 import TabsComponent from '@/components/layouts/TabsComponent';
 import { MainContent } from '@/components/layouts/MainContent';
 import { AnimatedGrid } from '@/components/common/AnimatedGrid';
+import Footer from '@/components/layouts/Footer';
 
 import useChangeTitle from '@/hooks/useChangeTitle';
 import TaiwanSVG from './MapPage/TaiwanSVG';
@@ -52,13 +53,17 @@ const HomePage = () => {
   const [sideFlexBasis, setSideFlexBasis] = useState('0%');
   const [mainFlexBasis, setMainFlexBasis] = useState('100%');
 
-  // 2. 在 useEffect 中設置目标狀態
+  // 2. 在 useEffect 中設置目標狀態
   useEffect(() => {
     setSideFlexBasis((pathIsMap || (pathIsResult && advanceSearchOpen)) ? '33.33%' : '0%');
     setMainFlexBasis((pathIsMap || (pathIsResult && advanceSearchOpen)) ? '66.66%' : '100%');
 
     if (pathIsMap || pathIsSearch) {
       dispatch(setAdvanceSearchOpen(false));
+
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      })
     }
   }, [
     pathIsMap,
@@ -70,7 +75,7 @@ const HomePage = () => {
   return (
     <>
       <Header />
-      <Box sx={{ p: 6, pt: 0, flexGrow: 1 }}>
+      <Box sx={{ p: 6, pt: 0, pb: 4, flexGrow: 1}}>
         <Grid container>
           <AnimatedGrid flexBasis={sideFlexBasis} xs={(pathIsMap || (pathIsResult && advanceSearchOpen)) ? 5 : 0}>
             <Sider />
@@ -86,6 +91,7 @@ const HomePage = () => {
           </AnimatedGrid >
         </Grid>
       </Box>
+      <Footer />
     </>
   );
 };

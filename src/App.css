@@ -14,3 +14,13 @@ body {
   box-sizing: border-box;
   font-family: 'Noto Sans TC';
 }
+
+.MuiFormHelperText-root {
+  background-color: #fdf3e7 !important;
+  text-align: right !important;
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  margin-left: 0px !important;
+  margin-top: 0px !important;
+}

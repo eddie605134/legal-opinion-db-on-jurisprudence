@@ -21,13 +21,13 @@
   color: black;
 }
 .path-click {
-  stroke: #ffffff;
-  fill: #94d6b1;
+  stroke: #ffffff !important;
+  fill: #94d6b1 !important;
 }
 .toppath-click {
-  stroke: brown;
-  stroke-width: 3;
-  fill: rgb(210, 166, 166);
+  stroke: brown !important;
+  stroke-width: 3 !important;
+  fill: rgb(210, 166, 166) !important;
 }
 .setLabel {
   display: block;
@@ -55,7 +55,8 @@ svg {
 }
 
 /* Path 元素的樣式 */
-path {
+#map-page path,
+#map-page svg {
   stroke: #a38561;
   fill: transparent;
   transition: 0.5s;
@@ -64,6 +65,10 @@ path {
 }
 
 /* Path 元素的 hover 效果 */
-path:hover {
+#map-page path:hover {
   animation: move 2s infinite;
+}
+
+#map-page path:hover ~ .map-label {
+  fill: block;
 }

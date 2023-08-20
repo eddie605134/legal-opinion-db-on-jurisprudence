@@ -4,6 +4,8 @@ import IconButton from '@mui/material/IconButton';
 import NavigationIcon from '@mui/icons-material/Navigation';
 import Tooltip from '@mui/material/Tooltip';
 
+import { Dialog, DialogTitle, DialogContent, DialogContentText } from '@mui/material';
+
 import './App.css'
 
 // 引入routes
@@ -11,6 +13,18 @@ import RouterConfig from './router';
 
 export default function App() {
   const [isVisible, setIsVisible] = useState(false);
+  
+
+  const isMobile = () => {
+    if (typeof window === 'undefined' || !window.navigator) {
+      return false;
+    }
+    const userAgent = window.navigator.userAgent;
+    return /Android|webOS|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent) && !/iPad/i.test(userAgent);
+  };
+
+  // 顯示對話框，如果裝置是移動裝置，但不是 iPad
+  const showDialog = isMobile();
 
   // 監聽視窗的滾動
   useEffect(() => {
@@ -33,6 +47,14 @@ export default function App() {
   };
   return (
     <div>
+      <Dialog open={showDialog}>
+        <DialogTitle>不支援的裝置</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            本系統不適合在手機端使用。請在桌面電腦或平板上訪問本系統。
+          </DialogContentText>
+        </DialogContent>
+      </Dialog>
       <RouterConfig />
       {isVisible && (
         <Tooltip
@@ -53,7 +75,6 @@ export default function App() {
             <NavigationIcon />
           </IconButton>
         </Tooltip>
-      
       )}
     </div>
   );

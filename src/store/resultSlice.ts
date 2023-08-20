@@ -22,6 +22,7 @@ interface ResultState {
   filterValues: FilterValues;
   resultList: OpinionType[];
   queryText: string;
+  tabObservable: boolean;
 }
 
 const initialState: ResultState = {
@@ -35,7 +36,8 @@ const initialState: ResultState = {
     endMonth: dayjs().month().toString(),
   },
   resultList: [],
-  queryText: ''
+  queryText: '',
+  tabObservable: true,
 }
 
 export const resultSlice = createSlice({
@@ -53,6 +55,9 @@ export const resultSlice = createSlice({
     },
     setQueryText: (state, action) => {
       state.queryText = action.payload;
+    },
+    setTabObservable: (state, action) => {
+      state.tabObservable = action.payload;
     }
   },
 })
@@ -61,7 +66,8 @@ export const {
   setFilterValue,
   setAdvanceSearchOpen,
   setResultList,
-  setQueryText
+  setQueryText,
+  setTabObservable,
 } = resultSlice.actions
 
 export default resultSlice.reducer

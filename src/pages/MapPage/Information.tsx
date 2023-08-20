@@ -225,7 +225,7 @@ const Information = () => {
                 <Typography sx={{ fontWeight: 600, fontSize: '1rem' }}>{`最常見的見解${index + 1}-${item.theme}`}</Typography>
               </AccordionSummary>
               <AccordionDetails>
-                <Tooltip title="點擊見解查詢" placement="left" arrow>
+                <Tooltip title="點擊以見解搜尋見解" placement="left" arrow>
                   <Typography sx={{
                     cursor: 'pointer',
                   }} onClick={() => handleOpinionClick(index + 1)}>{item.details}</Typography>

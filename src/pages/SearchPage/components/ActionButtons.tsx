@@ -4,6 +4,8 @@ import Box from '@mui/material/Box';
 import LoadingButton from '@mui/lab/LoadingButton';
 import SendIcon from '@mui/icons-material/Send';
 import CreateIcon from '@mui/icons-material/Create';
+import LightbulbIcon from '@mui/icons-material/Lightbulb';
+
 
 import {
   SearchButton,
@@ -13,6 +15,7 @@ import {
 interface ActionButtonsProps {
   searchType: string;
   isRandomLoading: boolean;
+  isSearchLoading: boolean;
   onSubmit: () => void;
   onKeyWordRandomClick: () => void;
   onOpinionRandomClick: () => void;
@@ -21,6 +24,7 @@ interface ActionButtonsProps {
 const ActionButtons: React.FC<ActionButtonsProps> = ({
   searchType,
   isRandomLoading,
+  isSearchLoading,
   onKeyWordRandomClick,
   onOpinionRandomClick,
   onSubmit
@@ -35,14 +39,14 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({
   return (
     <Box display="flex" justifyContent="space-between" sx={{ width: '100%' }}>
       <SearchButton
-        endIcon={<CreateIcon />}
+        endIcon={<LightbulbIcon />}
         isLoading={isRandomLoading}
         onClick={ () => onRandom() }
       >
         {searchType === '1' ? '隨機關鍵字' : '隨機見解'}
       </SearchButton>
       <SubmitButton
-        // isLoading={isRandomLoading}
+        isLoading={isSearchLoading}
         endIcon={<SendIcon />}
         onClick={onSubmit}
       >

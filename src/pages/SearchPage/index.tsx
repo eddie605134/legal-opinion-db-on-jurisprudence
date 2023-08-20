@@ -26,16 +26,21 @@ function SearchPage() {
 
   const [value, setValue] = useState('1');
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setError(false);
     setValue((event.target as HTMLInputElement).value);
   };
 
+  const [error, setError] = useState(false);
+
   const [keyword, setKeyword] = useState('');
   const handleKeywordChange = (event: any) => {
+    if (error) setError(false);
     if (event.target.value != undefined) {
       setKeyword(event.target.value);
     }
   };
   const handleRandomKeyWord = async () => {
+    if (error) setError(false);
     const { data: newKeywordData } = await refetchKeyword();
     if (newKeywordData?.keyword) {
       setKeyword(newKeywordData?.keyword);
@@ -44,11 +49,13 @@ function SearchPage() {
 
   const [opinion, setOpinion] = useState('');
   const handleOpinionChange = (event: any) => {
+    if (error) setError(false);
     if (event.target.value != undefined) {
       setOpinion(event.target.value);
     }
   };
   const handleRandomOpinion = async () => {
+    if (error) setError(false);
     const { data: newOpinionData } = await refetchOpinion();
     if (newOpinionData?.opinion) {
       setOpinion(newOpinionData?.opinion);
@@ -56,6 +63,16 @@ function SearchPage() {
   }
 
   const handleSearch = async () => {
+    // 檢查輸入值是否為空值
+    if (value === '1' && keyword === '') {
+      setError(true);
+      return;
+    }
+    if (value === '2' && opinion === '') {
+      setError(true);
+      return;
+    }
+
     const fetchData = value === '1' ? refetchSearchKeyword : refetchSearchOpinion;
     const { data } = await fetchData();
     if (data) {
@@ -80,29 +97,35 @@ function SearchPage() {
   const {
     refetch: refetchSearchKeyword,
     error: opinionError,
-    isLoading: searchOpinionLoading,
+    isFetching: searchOpinionLoading,
+    isSuccess: searchOpinionSuccess,
   } = useSearchOpinionByKeyword(keyword);
   const {
     refetch: refetchSearchOpinion,
     error: keywordError,
-    isLoading: searchKeywordLoading,
+    isFetching: searchKeywordLoading,
+    isSuccess: searchKeywordSuccess,
   } = useSearchOpinionByOpinion(opinion);
 
   useEffect(() => {
-    if (!searchOpinionLoading && !opinionError) {
+    if (searchOpinionSuccess) {
       navigate('/result');
 
       setTimeout(() => {
         window.scrollTo({ top: 150, behavior: 'smooth' });
       }, 300)
     }
-  }, [searchOpinionLoading]);
+  }, [searchOpinionSuccess]);
 
   useEffect(() => {
-    if (!searchKeywordLoading && !keywordError) {
+    if (searchKeywordSuccess) {
       navigate('/result');
+
+      setTimeout(() => {
+        window.scrollTo({ top: 150, behavior: 'smooth' });
+      }, 300)
     }
-  }, [searchKeywordLoading]);
+  }, [searchKeywordSuccess]);
 
   return (
     <Box display="flex" justifyContent="center" alignItems="flex-start" pt={4}>
@@ -123,19 +146,25 @@ function SearchPage() {
           isVisible={value === '1'}
           value={keyword}
           width="850px"
+          error={error}
           onChange={handleKeywordChange}
           />}
         {value === '2' &&
           <OpinionInput
             isVisible={value === '2'}
             value={opinion}
-            width="850px"
+          width="850px"
+          error={error}
             onChange={handleOpinionChange}
           />}
 
         <ActionButtons
           searchType={value}
-          isRandomLoading={keywordLoading || opinionLoading}
+          isRandomLoading={
+            keywordLoading || opinionLoading || searchOpinionLoading || searchKeywordLoading
+          }
+          isSearchLoading={
+            keywordLoading || opinionLoading || searchOpinionLoading || searchKeywordLoading}
           onKeyWordRandomClick={handleRandomKeyWord}
           onOpinionRandomClick={handleRandomOpinion}
           onSubmit={handleSearch}
