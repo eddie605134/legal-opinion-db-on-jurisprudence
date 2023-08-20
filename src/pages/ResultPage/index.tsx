@@ -11,7 +11,7 @@ const floatButton = [
     path: '/map',
   },
   {
-    text: '回查詢頁',
+    text: '回搜尋頁',
     path: '/search',
   },
 ]
