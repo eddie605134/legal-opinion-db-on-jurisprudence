@@ -4,9 +4,10 @@ import { Grid, Box } from '@mui/material';
 import Result from './components/Result';
 import FloatSearchIcon from '@/pages/ResultPage/components/FloatSearchIcon';
 
+
 const floatButton = [
   {
-    text: '回地圖頁',
+    text: '常用見解',
     path: '/map',
   },
   {

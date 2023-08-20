@@ -1,5 +1,6 @@
 // ResultPage.tsx
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { RootState } from '@/store'
@@ -80,6 +81,7 @@ const VirtuosoTableComponents: TableComponents<Data> = {
 };
 
 function ResultPage() {
+  const navigate = useNavigate()
   const disPatch = useDispatch()
   const [openSnackBar, setOpenSnackBar] = useState(false)
 
@@ -184,6 +186,8 @@ function ResultPage() {
             align={column.numeric || false ? 'left' : 'center'}
             style={{
               fontSize: '1rem',
+              // backgroundColor: _index % 2 === 0 ? '#f3f3f3' : '#ffffff', // 你可以自訂顏色
+              // backgroundColor: _index % 2 === 0 ? '#FDF3E7' : '#efd0aa',
             }}
           >
             {contentFormat(row, column, column.dataKey)}
@@ -235,7 +239,10 @@ function ResultPage() {
       </div>
       {/* <div style={{width: '70%', position: 'relative', float: 'right' }}> */}
       <div style={{ marginTop: '10px' }}>
-        <Paper style={{ height: '90vh', width: '100%' }}>
+        <Paper style={{
+          height: tableData.length < 1 ? '20vh' : '90vh',
+          width: '100%'
+        }}>
           <TableVirtuoso
             data={tableData}
             components={VirtuosoTableComponents}

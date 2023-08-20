@@ -13,20 +13,23 @@ interface FloatSearchIconProps {
 const FloatSearchIcon: React.FC<FloatSearchIconProps> = ({ text, num = 1, path }) => {
   const navigate = useNavigate();
   const tabVisible = useSelector((state: RootState) => state.result.tabObservable);
+  const advanceSearchOpen = useSelector((state: RootState) => state.result.advanceSearchOpen);
 
   return (
     <div style={{
-      display: tabVisible ? 'none' : 'block',
+      // display: tabVisible || advanceSearchOpen ? 'none' : 'block',
       position: 'fixed',
-      top: `${20 + num * 55}px`,
+      top: !tabVisible && !advanceSearchOpen ? `${20 + num * 55}px` : -80,
       left: '7px',
       backgroundColor: '#D6B894',
       color: '#5F5346',
+      fontWeight: 'bold',
       borderRadius: '5px',
-      transition: 'all 0.3s ease',
+      transition: 'all 0.2s ease',
       cursor: 'pointer',
       padding: '5px',
       border: '5px solid #5F5346',
+      opacity: !tabVisible && !advanceSearchOpen ? 1 : 0.3,
     }}
       onClick={() => {
         navigate(path)
