@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { RootState } from '@/store';
 import { useTheme } from '@mui/system';
-import { setFilterValue, setAdvanceSearchOpen } from '@/store/resultSlice';
+import { setFilterValue, setAdvanceSearchOpen, setResultList } from '@/store/resultSlice';
 
-import { Typography, Card, Checkbox, FormControl, FormControlLabel, FormGroup, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import { Typography, Card, Checkbox, FormControl, FormControlLabel, FormGroup, InputLabel, MenuItem, Select, SelectChangeEvent, Button } from '@mui/material';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
@@ -33,6 +33,35 @@ const AdvancedSearchDrawer = () => {
 
   const theme = useTheme();
   const filterValue = useSelector((state: RootState) => state.result.filterValues);
+  const resultList = useSelector((state: RootState) => state.result.resultList);
+  const [originData, setOriginData] = React.useState(resultList);
+  const [originObservable, setoriginObservable] = React.useState(false);
+
+  const handleSearch = () => {
+    console.log(filterValue.endMonth);
+    const filtered = originData.filter((opinion) => {
+      const court = filterValue.courtHouse.includes("最高法院") ? filterValue.courtHouse : filterValue.courtArea;
+      const syear = +filterValue.startYear > +filterValue.endYear ? filterValue.endYear : filterValue.startYear;
+      const eyear = +filterValue.startYear < +filterValue.endYear ? filterValue.endYear : filterValue.startYear;
+      const smonth = +filterValue.startMonth > +filterValue.endMonth ? filterValue.endMonth : filterValue.startMonth;
+      const emonth = +filterValue.startMonth < +filterValue.endMonth ? filterValue.endMonth : filterValue.startMonth;
+
+      const currentDate = new Date(opinion.jud_date);
+      const stime = new Date(syear + "/" + smonth + "/01");
+      const etime = new Date(eyear + "/" + emonth + "/31");
+
+      return opinion.court.includes(court) && currentDate >= stime && currentDate <= etime;
+    })
+
+    disPatch(setResultList(filtered));
+    setoriginObservable(true);
+  }
+
+  const setOriginResult = () => {
+    disPatch(setResultList(originData));
+    setoriginObservable(false);
+  }
+
   return (
     <Card sx={{
       boxShadow: 'unset',
@@ -67,10 +96,10 @@ const AdvancedSearchDrawer = () => {
         }}>法院別</InputLabel>
         <Select
           labelId="courthouse-select-label"
-            id="courthouse-select"
-            placeholder='請選擇 法院別'
+          id="courthouse-select"
+          placeholder='請選擇 法院別'
           value={filterValue.courtHouse}
-          onChange={(event: SelectChangeEvent) => { 
+          onChange={(event: SelectChangeEvent) => {
             setShowCourt(event.target.value);
             disPatch(setFilterValue({ courtHouse: event.target.value }))
           }}
@@ -99,7 +128,7 @@ const AdvancedSearchDrawer = () => {
               id="area-select"
               placeholder='請選擇 地方法院'
               value={filterValue.courtArea}
-              onChange={(event: SelectChangeEvent) => disPatch(setFilterValue({courtArea: event.target.value}))}
+              onChange={(event: SelectChangeEvent) => disPatch(setFilterValue({ courtArea: event.target.value }))}
             >
               <MenuItem value={'臺灣高等法院'}>臺灣高等法院</MenuItem>
               <MenuItem value={'臺灣高等法院花蓮分院'}>臺灣高等法院花蓮分院</MenuItem>
@@ -111,103 +140,159 @@ const AdvancedSearchDrawer = () => {
           </FormControl>
         )
       }
-    
+
       <div style={{ width: '84%', marginBottom: '28px', display: 'flex', justifyContent: 'space-between' }}>
         <FormControl style={{ width: '45%' }}>
           <InputLabel id="courthouse-select-label" sx={{
-          background: '#FDF3E7',
-        }}>查詢年分(起)</InputLabel>
+            background: '#FDF3E7',
+          }}>查詢年分(起)</InputLabel>
           <Select
             labelId="courthouse-select-label"
             id="courthouse-select"
             value={filterValue.startYear}
             label=""
-            onChange={(event: SelectChangeEvent) => disPatch(setFilterValue({startYear: event.target.value}))}
+            onChange={(event: SelectChangeEvent) => disPatch(setFilterValue({ startYear: event.target.value }))}
           >
-            <MenuItem value={2023}>2023</MenuItem>
-            <MenuItem value={2022}>2022</MenuItem>
-            <MenuItem value={2021}>2021</MenuItem>
+            <MenuItem value={'2018'}>2018</MenuItem>
+            <MenuItem value={'2017'}>2017</MenuItem>
+            <MenuItem value={'2016'}>2016</MenuItem>
           </Select>
         </FormControl>
         <div className="" style={{ paddingTop: '14px' }}>~</div>
-        <FormControl style={{ width: '45%' }}>
-          <InputLabel id="courthouse-select-label" sx={{
-          background: '#FDF3E7',
-        }}>查詢月分(起)</InputLabel>
-          <Select
-            labelId="courthouse-select-label"
-            id="courthouse-select"
-            value={filterValue.startMonth}
-            label=""
-            onChange={(event: SelectChangeEvent) => disPatch(setFilterValue({startMonth: event.target.value}))}
-          >
-            <MenuItem value={1}>1</MenuItem>
-            <MenuItem value={2}>2</MenuItem>
-            <MenuItem value={3}>3</MenuItem>
-            <MenuItem value={4}>4</MenuItem>
-            <MenuItem value={5}>5</MenuItem>
-            <MenuItem value={6}>6</MenuItem>
-            <MenuItem value={7}>7</MenuItem>
-            <MenuItem value={8}>8</MenuItem>
-            <MenuItem value={9}>9</MenuItem>
-            <MenuItem value={10}>10</MenuItem>
-            <MenuItem value={11}>11</MenuItem>
-            <MenuItem value={12}>12</MenuItem>
-          </Select>
-        </FormControl>
+        {filterValue.startYear == '2016' ?
+          <FormControl style={{ width: '45%' }}>
+            <InputLabel id="courthouse-select-label" sx={{
+              background: '#FDF3E7',
+            }}>查詢月分(起)</InputLabel>
+            <Select
+              labelId="courthouse-select-label"
+              id="courthouse-select"
+              value={+filterValue.startMonth < 8 ? "08" : filterValue.startMonth}
+              label=""
+              onChange={(event: SelectChangeEvent) => disPatch(setFilterValue({ startMonth: event.target.value }))}
+            >
+              <MenuItem value={'08'}>8</MenuItem>
+              <MenuItem value={'09'}>9</MenuItem>
+              <MenuItem value={'10'}>10</MenuItem>
+              <MenuItem value={'11'}>11</MenuItem>
+              <MenuItem value={'12'}>12</MenuItem>
+            </Select>
+          </FormControl>
+          :
+          <FormControl style={{ width: '45%' }}>
+            <InputLabel id="courthouse-select-label" sx={{
+              background: '#FDF3E7',
+            }}>查詢月分(起)</InputLabel>
+            <Select
+              labelId="courthouse-select-label"
+              id="courthouse-select"
+              value={filterValue.startMonth}
+              label=""
+              onChange={(event: SelectChangeEvent) => disPatch(setFilterValue({ startMonth: event.target.value }))}
+            >
+              <MenuItem value={'01'} >1</MenuItem>
+              <MenuItem value={'02'}>2</MenuItem>
+              <MenuItem value={'03'}>3</MenuItem>
+              <MenuItem value={'04'}>4</MenuItem>
+              <MenuItem value={'05'}>5</MenuItem>
+              <MenuItem value={'06'}>6</MenuItem>
+              <MenuItem value={'07'}>7</MenuItem>
+              <MenuItem value={'08'}>8</MenuItem>
+              <MenuItem value={'09'}>9</MenuItem>
+              <MenuItem value={'10'}>10</MenuItem>
+              <MenuItem value={'11'}>11</MenuItem>
+              <MenuItem value={'12'}>12</MenuItem>
+            </Select>
+          </FormControl>
+        }
       </div>
       <div className="" style={{ width: '84%', marginBottom: '30px', display: 'flex', justifyContent: 'space-between' }}>
         <FormControl style={{ width: '45%' }}>
           <InputLabel id="courthouse-select-label" sx={{
-          background: '#FDF3E7',
-        }}>查詢年分(迄)</InputLabel>
+            background: '#FDF3E7',
+          }}>查詢年分(迄)</InputLabel>
           <Select
             labelId="courthouse-select-label"
             id="courthouse-select"
             value={filterValue.endYear}
             label=""
-            onChange={(event: SelectChangeEvent) => disPatch(setFilterValue({endYear: event.target.value}))}
+            onChange={(event: SelectChangeEvent) => disPatch(setFilterValue({ endYear: event.target.value }))}
           >
-            <MenuItem value={2023}>2023</MenuItem>
-            <MenuItem value={2022}>2022</MenuItem>
-            <MenuItem value={2021}>2021</MenuItem>
+            <MenuItem value={'2018'}>2018</MenuItem>
+            <MenuItem value={'2017'}>2017</MenuItem>
+            <MenuItem value={'2016'}>2016</MenuItem>
           </Select>
         </FormControl>
         <div className="" style={{ paddingTop: '14px' }}>~</div>
-        <FormControl style={{ width: '45%' }}>
-          <InputLabel id="courthouse-select-label" sx={{
-          background: '#FDF3E7',
-        }}>查詢月分(迄)</InputLabel>
-          <Select
-            labelId="courthouse-select-label"
-            id="courthouse-select"
-            value={filterValue.endMonth}
-            label=""
-            onChange={(event: SelectChangeEvent) => disPatch(setFilterValue({endMonth: event.target.value}))}
-          >
-            <MenuItem value={1}>1</MenuItem>
-            <MenuItem value={2}>2</MenuItem>
-            <MenuItem value={3}>3</MenuItem>
-            <MenuItem value={4}>4</MenuItem>
-            <MenuItem value={5}>5</MenuItem>
-            <MenuItem value={6}>6</MenuItem>
-            <MenuItem value={7}>7</MenuItem>
-            <MenuItem value={8}>8</MenuItem>
-            <MenuItem value={9}>9</MenuItem>
-            <MenuItem value={10}>10</MenuItem>
-            <MenuItem value={11}>11</MenuItem>
-            <MenuItem value={12}>12</MenuItem>
-          </Select>
-        </FormControl>
+
+        {filterValue.endYear == '2016' ?
+          <FormControl style={{ width: '45%' }}>
+            <InputLabel id="courthouse-select-label" sx={{
+              background: '#FDF3E7',
+            }}>查詢月分(迄)</InputLabel>
+            <Select
+              labelId="courthouse-select-label"
+              id="courthouse-select"
+              value={+filterValue.endMonth < 8 ? "08" : filterValue.endMonth}
+              label=""
+              onChange={(event: SelectChangeEvent) => disPatch(setFilterValue({ endMonth: event.target.value }))}
+            >
+              <MenuItem value={'08'}>8</MenuItem>
+              <MenuItem value={'09'}>9</MenuItem>
+              <MenuItem value={'10'}>10</MenuItem>
+              <MenuItem value={'11'}>11</MenuItem>
+              <MenuItem value={'12'}>12</MenuItem>
+            </Select>
+          </FormControl>
+          :
+          <FormControl style={{ width: '45%' }}>
+            <InputLabel id="courthouse-select-label" sx={{
+              background: '#FDF3E7',
+            }}>查詢月分(迄)</InputLabel>
+            <Select
+              labelId="courthouse-select-label"
+              id="courthouse-select"
+              value={filterValue.endMonth}
+              label=""
+              onChange={(event: SelectChangeEvent) => disPatch(setFilterValue({ endMonth: event.target.value }))}
+            >
+              <MenuItem value={'01'}>1</MenuItem>
+              <MenuItem value={'02'}>2</MenuItem>
+              <MenuItem value={'03'}>3</MenuItem>
+              <MenuItem value={'04'}>4</MenuItem>
+              <MenuItem value={'05'}>5</MenuItem>
+              <MenuItem value={'06'}>6</MenuItem>
+              <MenuItem value={'07'}>7</MenuItem>
+              <MenuItem value={'08'}>8</MenuItem>
+              <MenuItem value={'09'}>9</MenuItem>
+              <MenuItem value={'10'}>10</MenuItem>
+              <MenuItem value={'11'}>11</MenuItem>
+              <MenuItem value={'12'}>12</MenuItem>
+            </Select>
+          </FormControl>
+        }
       </div>
       <div className="">
         <SubmitButton
           // isLoading={isRandomLoading}
           endIcon={<FilterAltIcon />}
-          onClick={() => { }}
+          onClick={() => handleSearch()}
         >
           篩選
         </SubmitButton>
+        {originObservable == true ?
+          <Button
+            sx={{
+              fontWeight: 600,
+              fontSize: '1rem',
+              color: 'black',
+              marginLeft: '20px',
+            }}
+            onClick={() => setOriginResult()}
+          >
+            重置資料
+          </Button>
+          : null}
       </div>
     </Card>
   )
