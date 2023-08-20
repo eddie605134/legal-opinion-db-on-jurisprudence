@@ -27,6 +27,10 @@ const theme = createTheme({
       main: '#52b27b',
       contrastText: '#FDF3E7',
     },
+    warning: {
+      main: '#d38735',
+      contrastText: '#FDF3E7',
+    },
     custom: {
       layoutBorder: {
         default: '#5F5346'
@@ -37,6 +41,9 @@ const theme = createTheme({
       contentBackground: {
         default: '#FDF3E7'
       },
+      activeBackground: {
+        default: '#d38735'
+      }
     }
   },
   components: {

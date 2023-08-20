@@ -38,28 +38,25 @@ interface ColumnData {
   dataKey: keyof Data;
   label: string;
   numeric?: boolean;
-  width?: number;
+  width?: number | string;
 }
 
 const columns: ColumnData[] = [
   {
     label: '地院',
     dataKey: 'court',
-    width: 130,
+    width: '130px',
   },
   {
     label: '裁判日期',
     dataKey: 'jud_date',
+    width: '150px',
   },
-  // {
-  //   label: '全文連結URL',
-  //   dataKey: 'jud_url',
-  // },
   {
     label: '案號',
     dataKey: 'case_num',
     numeric: true,
-    width: 190,
+    width: '190px',
   },
   {
     label: '見解',
@@ -99,11 +96,12 @@ function ResultPage() {
             align="center"
             style={{
               width: column.width,
+              minWidth: column.width,
               fontSize: '1.1rem',
               fontWeight: 600,
-              position: 'sticky',
-              top: 0,
-              zIndex: 1,
+              // position: 'sticky',
+              // top: 0,
+              // zIndex: 1,
             }}
             sx={{
               backgroundColor: '#D6B894',
@@ -220,7 +218,7 @@ function ResultPage() {
               endIcon={<SavedSearchIcon />}
               onClick={() => advanceSearchOpenHandler()}
               style={{
-                minWidth: '130px',
+                minWidth: '140px',
                 maxHeight: '40px',
                 paddingTop: '10px',
               }}

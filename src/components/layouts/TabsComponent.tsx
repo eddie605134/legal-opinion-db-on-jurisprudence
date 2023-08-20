@@ -1,10 +1,12 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { styled } from '@mui/system';
 
 import { RootState } from '@/store'
+import { setTabObservable } from '@/store/resultSlice';
 import { tabs, Tab } from '@/constants';
+import useElementObserver from '@/hooks/useElementObserver';
 
 const StyledNav = styled('nav')(({ theme }) => ({
   zIndex: 1,
@@ -59,6 +61,7 @@ const StyledTab = styled('a')(({theme}) => ({
 }));
 
 const TabsComponent = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -96,8 +99,18 @@ const TabsComponent = () => {
     return true;
   }
 
+  const handleEnterViewport = () => {
+    dispatch(setTabObservable(true));
+  };
+
+  const handleLeaveViewport = () => {
+    dispatch(setTabObservable(false));
+  };
+
+  useElementObserver('card-tabs', handleEnterViewport, handleLeaveViewport);
+
   return (
-    <StyledNav>
+    <StyledNav id="card-tabs">
       {
         tabs
           .filter(filterTabWithResultList)

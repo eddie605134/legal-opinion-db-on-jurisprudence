@@ -107,7 +107,7 @@ const TaiwanSVG = () => {
   };
 
 
-  return (<>
+  return (<div id='map-page'>
     <div
       className="tooltip"
       style={{
@@ -131,7 +131,7 @@ const TaiwanSVG = () => {
       xmlns="http://www.w3.org/2000/Svg"
       viewBox="0 0 595.28 841.89">
       <defs></defs>
-      {/* <title>臺灣地圖</title> */}
+      <title>臺灣地圖</title>
 
       <path id="penghu_country" onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave} data-name="penghu_country" values='4' className={
@@ -249,7 +249,7 @@ const TaiwanSVG = () => {
       </g>
     </svg>
 
-  </>)
+  </div>)
 }
 
 export default TaiwanSVG

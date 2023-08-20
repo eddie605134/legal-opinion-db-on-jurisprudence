@@ -12,13 +12,15 @@ declare module '@mui/material/styles' {
       contentBackground?: {
         default?: string;
       };
+      activeBackground?: {
+        default?: string;
+      };
     };
   }
   interface Components {
     AnimatedGrid: {
       styleOverrides?: {
         root?: Record<string, any>;
-        // 你可以在此添加其他的子類別 (e.g., label, etc.) 如果需要
       };
     };
   }

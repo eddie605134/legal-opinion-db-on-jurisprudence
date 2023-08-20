@@ -18,8 +18,8 @@ const RadioSelection: React.FC<RadioSelectionProps> = ({ value, onChange }) => {
         查詢條件：
       </Typography>
       <RadioGroup row value={value} onChange={onChange}>
-        <FormControlLabel value="1" control={<Radio color="secondary"/>} label="關鍵字搜尋" />
-        <FormControlLabel value="2" control={<Radio color="secondary"/>} label="見解搜尋" />
+        <FormControlLabel value="1" control={<Radio color="warning"/>} label="關鍵字搜尋" />
+        <FormControlLabel value="2" control={<Radio color="warning"/>} label="見解搜見解" />
       </RadioGroup>
     </div>
   );

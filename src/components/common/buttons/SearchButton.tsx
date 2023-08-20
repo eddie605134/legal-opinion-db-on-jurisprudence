@@ -25,9 +25,10 @@ export const SearchButton: React.FC<SearchButtonProps> = ({
       loading={isLoading}
       sx={{
         textAlign: 'justify',
-        color: '#5F5346',
+        color: '#ffffff',
         fontSize: '1rem',
         fontWeight: 600,
+        backgroundColor: '#d38735',
         '&:hover': {
           backgroundColor: 'rgba(191, 163, 128)'
         }
