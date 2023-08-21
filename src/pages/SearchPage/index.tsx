@@ -134,7 +134,7 @@ function SearchPage() {
           textAlign: 'center',
           fontWeight: 'bold',
           color: 'custom.layoutBorder.default',
-          mb: 8
+          mb: 6
         }}>
           搜尋資訊
         </Typography>
