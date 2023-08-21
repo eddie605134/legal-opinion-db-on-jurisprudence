@@ -27,11 +27,14 @@ const OpinionInput: React.FC<OpinionInputProps> = ({
           rows={10}
           error={error}
           helperText={error ? '見解不得為空' : ''}
-          style={{ width: width }}
           FormHelperTextProps={{
             style: { backgroundColor: '#FDF3E7', textAlign: 'right' },
           }}
           sx={{
+            width: {
+              xs: '600px',
+              md: width
+            },
             fontSize: '1.2rem',
             backgroundColor: 'white',
             '&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {

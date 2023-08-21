@@ -10,8 +10,11 @@ import useElementObserver from '@/hooks/useElementObserver';
 
 const StyledNav = styled('nav')(({ theme }) => ({
   zIndex: 1,
-  paddingLeft: '7px',
-  background: theme.palette.background.default
+  paddingLeft: '5px',
+  background: theme.palette.background.default,
+  [theme.breakpoints.up('md')]: {
+    paddingLeft: '7px',
+  },
 }));
 
 const StyledTab = styled('a')(({theme}) => ({

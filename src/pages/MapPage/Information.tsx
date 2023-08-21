@@ -171,7 +171,7 @@ const Information = () => {
             }}
             style={{
               width: '100%',
-              fontSize: '1.1rem',
+              fontSize: '1rem',
               fontWeight: 'bold',
             }}
             
@@ -179,7 +179,13 @@ const Information = () => {
             {supremeCourt}
           </Button>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '12px',
+          flexWrap: 'wrap',
+        }}>
           {courtItems.map((item) => (
             <Box key={item.id}>
               <Button
@@ -191,11 +197,14 @@ const Information = () => {
                     backgroundColor: '#52B27B',
                     color: 'white',
                   },
+                  fontSize: {
+                    xs: '0.8rem',
+                    lg: '1rem',
+                  },
                 }}
                 style={{
                   marginBottom: '5px',
                   whiteSpace: 'pre-wrap',
-                  fontSize: '1.1rem',
                   fontWeight: 'bold',
                   height: '75px',
                 }}
@@ -204,7 +213,7 @@ const Information = () => {
               </Button>
             </Box>
           ))}
-        </div>
+      </div>
       </div>
       <div>
         <FormLabel sx={{pl: 1, fontSize: '1.1rem', fontWeight: 600, color: '#5F5346'}} className='setLabel'>{courtInfo.court}</FormLabel>

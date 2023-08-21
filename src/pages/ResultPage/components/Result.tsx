@@ -98,7 +98,7 @@ function ResultPage() {
             align="center"
             style={{
               width: column.width,
-              minWidth: column.width,
+              minWidth: column.dataKey !== 'opinion' ? column.width : '450px',
               fontSize: '1.1rem',
               fontWeight: 600,
               // position: 'sticky',

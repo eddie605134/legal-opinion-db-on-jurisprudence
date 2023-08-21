@@ -23,7 +23,6 @@ const KeywordInput: React.FC<KeywordInputProps> = ({
         <TextField
           value={value}
           placeholder="請輸入關鍵字，或者點選下方隨機關鍵字"
-          style={{ width: width }}
           variant="outlined"
           size="small"
           error={error}
@@ -32,6 +31,10 @@ const KeywordInput: React.FC<KeywordInputProps> = ({
             style: { backgroundColor: '#FDF3E7', textAlign: 'right' },
           }}
           sx={{
+            width: {
+              xs: '600px',
+              md: width
+            },
             backgroundColor: 'white',
             '&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
               borderColor: 'primary.main',

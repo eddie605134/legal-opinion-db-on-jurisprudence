@@ -54,6 +54,9 @@ const HomePage = () => {
   const [mainFlexBasis, setMainFlexBasis] = useState('100%');
 
   // 2. 在 useEffect 中設置目標狀態
+
+  // 螢幕寬度小於 1040px 時，sideFlexBasis 只能是0%。
+
   useEffect(() => {
     setSideFlexBasis((pathIsMap || (pathIsResult && advanceSearchOpen)) ? '33.33%' : '0%');
     setMainFlexBasis((pathIsMap || (pathIsResult && advanceSearchOpen)) ? '66.66%' : '100%');
