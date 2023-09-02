@@ -23,12 +23,14 @@ const toOpinion = (data: OpinionType): OpinionType => ({
   csv_index: data.x_df_index,
   x_df_index: data.x_df_index,
   order_index: data.order_index,
-  distance: data.distance
+  distance: data.distance,
+  same_distance_num: data.same_distance_num,
+  show_unique_result: data.show_unique_result,
 });
 
 // p2取得見解by keyword
 export const getOpinionByKeyword = async (keyword: string): Promise<{ list: OpinionType[], queryText: string }> => {
-  const res:AxiosResponse<ResType<ResOpinionType>> = await get(`/embeds/?keyword=${keyword}`);
+  const res: AxiosResponse<ResType<ResOpinionType>> = await get(`/embeds/?keyword=${keyword}`);
 
   const list: OpinionType[] = res.data.content.data.map((item: OpinionType) => toOpinion(item));
 
@@ -40,7 +42,7 @@ export const getOpinionByKeyword = async (keyword: string): Promise<{ list: Opin
 
 // p2取得見解by opinion
 export const getOpinionByOpinion = async (opinion: string): Promise<{ list: OpinionType[], queryText: string }> => {
-  const res:AxiosResponse<ResType<ResOpinionType>> = await get(`/embeds/?opinion=${opinion}`);
+  const res: AxiosResponse<ResType<ResOpinionType>> = await get(`/embeds/?opinion=${opinion}`);
 
   const list: OpinionType[] = res.data.content.data.map((item: OpinionType) => toOpinion(item));
 
@@ -57,7 +59,7 @@ const toRandomKeyWord = (data: GenerationKeywordType): GenerationKeywordType => 
 // p2取得隨機關鍵字
 export const getRandomKeyword = async (): Promise<{ keyword: string }> => {
   const res: AxiosResponse<ResType<ResGenKeywordType>> = await get(`/generation/keyword`);
-  
+
   const list: GenerationKeywordType[] = res.data.content.data.map((item: GenerationKeywordType) => toRandomKeyWord(item));
 
   return {

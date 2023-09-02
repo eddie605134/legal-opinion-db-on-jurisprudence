@@ -22,8 +22,8 @@ const toCourtInfo = (data: CurtType): CurtType => ({
 });
 
 // 該法院相關資訊
-export const getCourtInfo= async (court: number): Promise<{ list: CurtType[] }> => {
-  const res:AxiosResponse<ResType<ResCurtType>> = await get(`/tfidf/court/${court}`);
+export const getCourtInfo = async (court: number): Promise<{ list: CurtType[] }> => {
+  const res: AxiosResponse<ResType<ResCurtType>> = await get(`/tfidf/court/${court}`);
 
   const list: CurtType[] = res.data.content.data.map((item: CurtType) => toCourtInfo(item));
 
@@ -41,12 +41,14 @@ const toOpinion = (data: OpinionType): OpinionType => ({
   csv_index: data.x_df_index,
   x_df_index: data.x_df_index,
   order_index: data.order_index,
-  distance: data.distance
+  distance: data.distance,
+  same_distance_num: data.same_distance_num,
+  show_unique_result: data.show_unique_result,
 });
 
 // p1取得見解
-export const getOpinionByCourtIndex = async ({ court, opinionIndex }: {court: number, opinionIndex: number}): Promise<{ list: OpinionType[], queryText: string }> => {
-  const res:AxiosResponse<ResType<ResOpinionType>> = await get(`/tfidf/court/${court}/opinion/${opinionIndex}`);
+export const getOpinionByCourtIndex = async ({ court, opinionIndex }: { court: number, opinionIndex: number }): Promise<{ list: OpinionType[], queryText: string }> => {
+  const res: AxiosResponse<ResType<ResOpinionType>> = await get(`/tfidf/court/${court}/opinion/${opinionIndex}`);
 
   const list: OpinionType[] = res.data.content.data.map((item: OpinionType) => toOpinion(item));
 

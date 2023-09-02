@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { setSelectMap } from '@/store/mapSlice';
 import { RootState } from '@/store';
-import { setResultList, setQueryText } from '@/store/resultSlice';
+import { setResultList, setQueryText, setQueryBy } from '@/store/resultSlice';
 
 import { CurtType } from '@/types/map';
 import { useSearchOpinionByCourtIndex, useCourtInfo } from '@/services/query';
@@ -54,6 +54,8 @@ const Information = () => {
     const fetchData = refetchSearchOpinionByCourtIndex;
     const { data } = await fetchData();
     if (data) {
+      // 搜尋依見解
+      setQueryBy('O');
       await dispatch(setResultList(data.list));
       await dispatch(setQueryText(data.queryText))
       navigate('/result');

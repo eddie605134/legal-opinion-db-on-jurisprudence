@@ -21,6 +21,8 @@ import SnackbarContent from '@mui/material/SnackbarContent';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import SavedSearchIcon from '@mui/icons-material/SavedSearch';
 import Alert from '@mui/material/Alert';
+import Chip from '@mui/material/Chip';
+import Divider from '@mui/material/Divider';
 
 import {
   SearchButton,
@@ -33,6 +35,8 @@ interface Data {
   jud_url: string;
   case_num: string;
   opinion: string;
+  same_distance_num: number | '';
+  show_unique_result: boolean | '';
 }
 
 interface ColumnData {
@@ -41,6 +45,8 @@ interface ColumnData {
   numeric?: boolean;
   width?: number | string;
 }
+
+type DataType = Data[keyof Data];
 
 const columns: ColumnData[] = [
   {
@@ -81,10 +87,11 @@ const VirtuosoTableComponents: TableComponents<Data> = {
 };
 
 function ResultPage() {
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   const disPatch = useDispatch()
   const [openSnackBar, setOpenSnackBar] = useState(false)
 
+  const queryBy = useSelector(((state: RootState) => state.result.queryBy))
   const tableData = useSelector((state: RootState) => state.result.resultList)
 
   // table組件================================
@@ -116,15 +123,31 @@ function ResultPage() {
     );
   }
 
-  const copyToClipboard = (value: string) => {
+  const copyToClipboard = (value: DataType) => {
     const textarea = document.createElement('textarea');
-    textarea.value = value;
+    textarea.value = value.toString();
     document.body.appendChild(textarea);
     textarea.select();
     document.execCommand('copy');
     document.body.removeChild(textarea);
     setOpenSnackBar(true)
   }
+
+  const highlightQuery = (queryText: string, opinion: DataType, queryBy: string) => {
+  if (queryBy === 'K' && opinion && queryText && typeof opinion === 'string') {
+    const parts = opinion?.split(new RegExp(`(${queryText})`, 'g'));
+    return parts && (
+      <span>
+        {parts.map((part, index) => 
+          part === queryText 
+            ? <span key={index} style={{ backgroundColor: 'yellow' }}>{part}</span> 
+            : part
+        )}
+      </span>
+    );
+  }
+  return opinion;
+}
 
   const contentFormat = (row: Data, column: ColumnData, dataKey: string) => {
     if (dataKey === 'case_num') {
@@ -168,7 +191,37 @@ function ResultPage() {
           <div 
             style={{ cursor: 'pointer' }}
           >
-            {row[column.dataKey]}
+            <div className="" style={{
+              marginTop: '4px',
+            }}>
+              {highlightQuery(
+              queryText,
+              row[column.dataKey],
+              queryBy
+            ) || ' '}
+              {/* {row[column.dataKey]} */}
+            </div>
+            <div className="" style={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+            }}>
+              <Chip
+                label={`重複頻率: ${row.same_distance_num}`}
+                color="warning"
+                sx={{
+                  height: 'auto',
+                  '& .MuiChip-label': {
+                    display: 'block',
+                    marginBottom: '4px',
+                    marginTop: '4px',
+                  },
+                  marginBottom: '2px',
+                  marginRight: '4px',
+                  fontSize: '0.9rem',
+                  fontWeight: 600,
+                }}
+              />
+            </div>
           </div>
         </Tooltip>
       )

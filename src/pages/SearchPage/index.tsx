@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { setResultList, setQueryText } from '@/store/resultSlice';
+import { setResultList, setQueryText, setQueryBy } from '@/store/resultSlice';
 import {
   useRandomKeyword,
   useRandomOpinion,
@@ -72,6 +72,9 @@ function SearchPage() {
       setError(true);
       return;
     }
+
+    // 把查詢Type存到store
+    dispatch(setQueryBy(value));
 
     const fetchData = value === '1' ? refetchSearchKeyword : refetchSearchOpinion;
     const { data } = await fetchData();

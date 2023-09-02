@@ -32,6 +32,10 @@ const theme = createTheme({
       main: '#d38735',
       contrastText: '#FDF3E7',
     },
+    info: {
+      main: '#2395e1',
+      contrastText: '#FDF3E7',
+    },
     custom: {
       layoutBorder: {
         default: '#5F5346'

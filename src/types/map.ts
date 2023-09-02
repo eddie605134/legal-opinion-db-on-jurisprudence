@@ -37,6 +37,8 @@ export type OpinionType = {
   order_index: string;
   x_df_index: string;
   csv_index?: string;
+  same_distance_num: number | '';
+  show_unique_result: boolean | '';
 }
 
 export type ResOpinionType = {

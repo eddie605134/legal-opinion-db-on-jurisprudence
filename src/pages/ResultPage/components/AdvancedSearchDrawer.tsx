@@ -5,7 +5,7 @@ import { RootState } from '@/store';
 import { useTheme } from '@mui/system';
 import { setFilterValue, setAdvanceSearchOpen, setResultList } from '@/store/resultSlice';
 
-import { Typography, Card, Checkbox, FormControl, FormControlLabel, FormGroup, InputLabel, MenuItem, Select, SelectChangeEvent, Button } from '@mui/material';
+import { Typography, Card, Checkbox, FormControl, FormControlLabel, FormGroup, InputLabel, MenuItem, Select, SelectChangeEvent, Button, Switch } from '@mui/material';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
@@ -45,12 +45,13 @@ const AdvancedSearchDrawer = () => {
       const eyear = +filterValue.startYear < +filterValue.endYear ? filterValue.endYear : filterValue.startYear;
       const smonth = +filterValue.startMonth > +filterValue.endMonth ? filterValue.endMonth : filterValue.startMonth;
       const emonth = +filterValue.startMonth < +filterValue.endMonth ? filterValue.endMonth : filterValue.startMonth;
+      const uniqueCondition = filterValue.unique ? opinion.show_unique_result === true : true;
 
       const currentDate = new Date(opinion.jud_date);
       const stime = new Date(syear + "/" + smonth + "/01");
       const etime = new Date(eyear + "/" + emonth + "/31");
 
-      return opinion.court.includes(court) && currentDate >= stime && currentDate <= etime;
+      return opinion.court.includes(court) && currentDate >= stime && currentDate <= etime && uniqueCondition;
     })
 
     disPatch(setResultList(filtered));
@@ -271,6 +272,22 @@ const AdvancedSearchDrawer = () => {
             </Select>
           </FormControl>
         }
+      </div>
+      <div style={{
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'flex-end',
+        paddingRight: '30px',
+        marginBottom: '20px',
+      }}>
+        <FormControl >
+          <FormControlLabel
+            value={filterValue.unique}
+            control={<Switch color="warning" />}
+            label="只顯示唯一見解"
+            labelPlacement="start"
+          />
+        </FormControl>
       </div>
       <div className="">
         <SubmitButton

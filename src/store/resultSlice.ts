@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-import { 
+import {
   OpinionType
 } from '@/types/map'
 
@@ -15,6 +15,8 @@ interface FilterValues {
 
   endYear: string;
   endMonth: string;
+
+  unique: boolean;
 }
 
 interface ResultState {
@@ -23,6 +25,7 @@ interface ResultState {
   resultList: OpinionType[];
   queryText: string;
   tabObservable: boolean;
+  queryBy: 'K' | 'O' | '';
 }
 
 const initialState: ResultState = {
@@ -38,10 +41,13 @@ const initialState: ResultState = {
     startMonth: '08',
     endYear: '2018',
     endMonth: '12',
+    unique: false,
   },
   resultList: [],
   queryText: '',
   tabObservable: true,
+  // 
+  queryBy: '',
 }
 
 export const resultSlice = createSlice({
@@ -62,6 +68,13 @@ export const resultSlice = createSlice({
     },
     setTabObservable: (state, action) => {
       state.tabObservable = action.payload;
+    },
+    setQueryBy: (state, action) => {
+      if (action.payload === '1') {
+        state.queryBy = 'K';
+      } else if (action.payload === '2') {
+        state.queryBy = 'O';
+      }
     }
   },
 })
@@ -72,6 +85,7 @@ export const {
   setResultList,
   setQueryText,
   setTabObservable,
+  setQueryBy,
 } = resultSlice.actions
 
 export default resultSlice.reducer
