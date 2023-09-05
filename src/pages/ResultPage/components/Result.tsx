@@ -22,7 +22,6 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import SavedSearchIcon from '@mui/icons-material/SavedSearch';
 import Alert from '@mui/material/Alert';
 import Chip from '@mui/material/Chip';
-import Divider from '@mui/material/Divider';
 
 import {
   SearchButton,
@@ -199,29 +198,33 @@ function ResultPage() {
               row[column.dataKey],
               queryBy
             ) || ' '}
-              {/* {row[column.dataKey]} */}
             </div>
-            <div className="" style={{
-              display: 'flex',
-              justifyContent: 'flex-end',
-            }}>
-              <Chip
-                label={`重複頻率: ${row.same_distance_num}`}
-                color="warning"
-                sx={{
-                  height: 'auto',
-                  '& .MuiChip-label': {
-                    display: 'block',
-                    marginBottom: '4px',
-                    marginTop: '4px',
-                  },
-                  marginBottom: '2px',
-                  marginRight: '4px',
-                  fontSize: '0.9rem',
-                  fontWeight: 600,
-                }}
-              />
-            </div>
+            {
+              // 重複頻率只在搜尋見解時顯示
+              queryBy === 'O' && (
+                <div className="" style={{
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                }}>
+                  <Chip
+                    label={`重複頻率: ${row.same_distance_num}`}
+                    color="warning"
+                    sx={{
+                      height: 'auto',
+                      '& .MuiChip-label': {
+                        display: 'block',
+                        marginBottom: '4px',
+                        marginTop: '4px',
+                      },
+                      marginBottom: '2px',
+                      marginRight: '4px',
+                      fontSize: '0.9rem',
+                      fontWeight: 600,
+                    }}
+                  />
+                </div>
+              )
+            }
           </div>
         </Tooltip>
       )
