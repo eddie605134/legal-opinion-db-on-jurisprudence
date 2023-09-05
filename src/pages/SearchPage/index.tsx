@@ -59,7 +59,7 @@ function SearchPage() {
     const { data: newOpinionData } = await refetchOpinion();
     if (newOpinionData?.opinion) {
       setOpinion(newOpinionData?.opinion);
-    }
+    } 
   }
 
   const handleSearch = async () => {
