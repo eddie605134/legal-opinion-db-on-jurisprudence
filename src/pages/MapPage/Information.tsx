@@ -55,7 +55,7 @@ const Information = () => {
     const { data } = await fetchData();
     if (data) {
       // 搜尋依見解
-      setQueryBy('O');
+      setQueryBy('2');
       await dispatch(setResultList(data.list));
       await dispatch(setQueryText(data.queryText))
       navigate('/result');
