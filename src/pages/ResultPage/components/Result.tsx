@@ -200,7 +200,7 @@ function ResultPage() {
             ) || ' '}
             </div>
             {
-              // 重複頻率只在搜尋見解時顯示 
+              // 重複頻率只在搜尋見解時顯示  
               queryBy === 'O' && (
                 <div className="" style={{
                   display: 'flex',
